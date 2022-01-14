@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 let { width: canvasWidth, height: canvasHeight } = canvas;
 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 let id = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-const canvasFps = 60;
+const canvasFps = 30;
 const canvasPos = {
 	top: undefined,
 	left: undefined,
@@ -19,9 +19,14 @@ function getPointsDistance(a, b) {
 	return distance;
 }
 function getMouseSpawnChance(pixelPos, mouseCanvasPos) {
-	const maxDistance = 10;
+	const maxDistance = 20;
 	let randDistance = Math.floor(Math.random() * 40 + maxDistance);
 	//randDistance = maxDistance;
+
+	// chech if pixel is outside of circle
+	// const { center, radius } = getCircleParams();
+	// const distanceFromCenter = getPointsDistance(pixelPos, center);
+	// if (distanceFromCenter > radius) return false;
 
 	const distance = getPointsDistance(pixelPos, mouseCanvasPos);
 	if (distance < randDistance) {
@@ -30,9 +35,14 @@ function getMouseSpawnChance(pixelPos, mouseCanvasPos) {
 	}
 	return false;
 }
-function getCirclePos(pixelPos) {
+// function getCircleParams(width = 1.2, margin = 20) {
+// 	const center = { x: canvasWidth / 2, y: canvasHeight / 2 };
+// 	const radius = canvasWidth / 2 - width / 2 - margin;
+// 	return { center, radius };
+// }
+function getCirclePos(pixelPos, mouseCanvasPos) {
 	const width = 1.2;
-	const margin = 20;
+	const margin = 50;
 	const innerNoiseWidth = 100;
 	const randomRange = 1;
 	const noiseRandomWidth = Math.floor(
@@ -50,19 +60,33 @@ function getCirclePos(pixelPos) {
 	// const circleCondition2 = distance > radius - widthHalf;
 	// if (circleCondition1 && circleCondition2) return true;
 
+	const mouseDistance = getPointsDistance(pixelPos, mouseCanvasPos);
+	let mouseAmplifier = 0;
+	let ampDistance = 150;
+	if (mouseDistance < ampDistance) {
+		let mouseDistanceRatio = (ampDistance - mouseDistance) / ampDistance;
+		mouseAmplifier = Math.pow(mouseDistanceRatio, 3) * 10;
+	}
+
+	//console.log(mouseAmplifier);
+
 	//paint circle inner noise
 	const noiseOutterBorder = radius - widthHalf;
-	const noiseInnerBorder = radius - widthHalf - noiseRandomWidth;
+	const noiseInnerBorder =
+		radius - widthHalf - noiseRandomWidth - ampDistance * mouseAmplifier;
 	const noiseCondition1 = distance < noiseOutterBorder;
 	const noiseCondition2 = distance > noiseInnerBorder;
+
 	if (noiseCondition1 && noiseCondition2) {
 		const ratio =
 			(distance - noiseInnerBorder) / (noiseOutterBorder - noiseInnerBorder);
-		return Math.pow(ratio, noiseModifier) > Math.random();
+		let condition = Math.pow(ratio, noiseModifier) > Math.random();
+		return condition && Math.pow(ratio, 3);
 	}
 
 	return false;
 }
+
 function init() {
 	let { top, left } = canvas.getBoundingClientRect();
 	canvasPos.top = top;
@@ -95,10 +119,12 @@ function paint() {
 		pixels[off + 1] = s;
 		pixels[off + 2] = s;
 		pixels[off + 3] = 255;
-		if (getCirclePos({ x, y })) {
-			pixels[off] = 255;
-			pixels[off + 1] = 255;
-			pixels[off + 2] = 255;
+		let cicrleRatio = getCirclePos({ x, y }, mouseCanvasPos);
+		if (cicrleRatio) {
+			let brightness = cicrleRatio * 255;
+			pixels[off] = brightness;
+			pixels[off + 1] = brightness;
+			pixels[off + 2] = brightness;
 			pixels[off + 3] = 255;
 		}
 	}
