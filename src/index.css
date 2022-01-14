@@ -1,0 +1,110 @@
+:root{
+    
+    /* --main-color:  */
+    --scrollbar-width: 8px;
+    --scrollbar-color-t: #000;
+    --scrollbar-color-b: #666;
+    --section-color: hsl(0, 0%, 10%);
+    --navbar-height: 60px;
+}
+
+*{  
+    box-sizing: border-box;
+}
+
+body{
+    background: linear-gradient(45deg, hsl(295, 80%, 50%) , hsl(26, 80%, 50%) 80%);
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+}
+
+main{
+    top: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.flex-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Nav */
+nav{
+    height: var(--navbar-height);
+    width: calc(100% - var(--scrollbar-width));
+    position: absolute;
+    top:0;
+    left: 0;
+    background: hsla(0, 0%, 0%, 0.6);
+    justify-content: flex-end !important;
+    z-index: 10;
+}
+
+nav ul{
+    list-style: none;
+    color: white;
+}
+nav li{
+    width: 80px;
+    text-align: center;
+}
+a{
+    text-decoration: none;
+}
+a:visited{
+    color: inherit;
+}
+
+/* section */
+section,
+header{
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+    scroll-snap-align: center;
+    position:relative;
+    padding-top: var(--navbar-height);
+}
+
+header{
+    top: 0;
+}
+
+#my-work{
+    background: var(--section-color);
+    color: white;
+}
+
+.section-container{
+    height: 80%;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+
+/* scrollbar */
+.scrollbar{
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color-t) var(--scrollbar-color-b);
+    scroll-snap-type: y proximity;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    background-color: var(--scrollbar-color-b);
+}
+  
+.scrollbar::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-color-t);;
+}
