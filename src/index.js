@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 let { width: canvasWidth, height: canvasHeight } = canvas;
 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 let id = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-const canvasFps = 60;
+const canvasFps = 50;
 const canvasPos = {
 	top: undefined,
 	left: undefined,
@@ -12,12 +12,32 @@ const mousePos = {
 	x: undefined,
 	y: undefined,
 };
-function getSpawnChance(pixelPos, mouseCanvasPos) {
-	const maxDistance = 20;
-	const x = Math.abs(pixelPos.x - mouseCanvasPos?.x);
-	const y = Math.abs(pixelPos.y - mouseCanvasPos?.y);
+function getPointsDistance(a, b) {
+	const x = Math.abs(a.x - b?.x);
+	const y = Math.abs(a.y - b?.y);
 	const distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-	if (distance < maxDistance) return true;
+	return distance;
+}
+function getSpawnChance(pixelPos, mouseCanvasPos) {
+	const maxDistance = 10;
+	const randDistance = Math.floor(Math.random() * 40 + maxDistance);
+
+	const distance = getPointsDistance(pixelPos, mouseCanvasPos);
+	if (distance < randDistance) {
+		const ratio = distance / randDistance;
+		return Math.pow(ratio, 1.5) < Math.random();
+	}
+	return false;
+}
+function getCirclePos(pixelPos) {
+	const center = { x: canvasWidth / 2, y: canvasHeight / 2 };
+	const width = 1.2;
+	const margin = 20;
+	const radius = canvasWidth / 2 - width / 2 - margin;
+	const distance = getPointsDistance(center, pixelPos);
+	const partialWidth = width / 2;
+	if (distance < radius + partialWidth && distance > radius - partialWidth)
+		return true;
 	return false;
 }
 function init() {
@@ -46,13 +66,18 @@ function paint() {
 		let x = i % canvasWidth;
 		let y = Math.floor(i / canvasWidth);
 		let chance = getSpawnChance({ x, y }, mouseCanvasPos);
-		let s = chance ? 200 : 0;
-
+		let s = chance ? Math.floor(Math.random() * 255) : 255;
 		let off = i * 4;
-		pixels[off] = s;
-		pixels[off + 1] = s;
-		pixels[off + 2] = s;
-		pixels[off + 3] = 255;
+		pixels[off] = 0;
+		pixels[off + 1] = 0;
+		pixels[off + 2] = 0;
+		pixels[off + 3] = s;
+		if (getCirclePos({ x, y })) {
+			pixels[off] = 255;
+			pixels[off + 1] = 255;
+			pixels[off + 2] = 255;
+			pixels[off + 3] = 255;
+		}
 	}
 	ctx.putImageData(id, 0, 0);
 }
