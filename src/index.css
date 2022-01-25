@@ -106,3 +106,15 @@ header {
 .scrollbar::-webkit-scrollbar-thumb {
 	background: var(--scrollbar-color-t);
 }
+
+.clipping-mask {
+	box-sizing: border-box;
+	width: 400px;
+	height: 400px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.clipping-mask > canvas {
+	transform: translate(-101px, -100px);
+}

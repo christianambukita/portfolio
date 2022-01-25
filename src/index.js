@@ -18,14 +18,15 @@ let circleData = [];
 
 function initCircle() {
 	const width = 1.2;
-	const margin = 50;
+	const margin = 100;
 	const innerNoiseWidth = 100;
 	const noiseRandomWidth = innerNoiseWidth;
 	const noiseModifier = 8;
 	const widthHalf = width / 2;
+	const padding = 2;
 
 	const center = [canvasWidth / 2, canvasHeight / 2];
-	const radius = canvasWidth / 2 - width / 2 - margin;
+	const radius = canvasWidth / 2 - width / 2 - margin + padding;
 
 	const noiseOutterBorder = radius - widthHalf;
 	const noiseInnerBorder = radius - widthHalf - noiseRandomWidth;
@@ -77,6 +78,7 @@ kernel = function (mouseOver, mpx, mpy) {
 	let mouseSpawnChance = false;
 	let mouseDistance = 0;
 
+	///Mouse distance
 	if (mouseOver) {
 		const mdx = Math.abs(pixelPos[0] - mpx);
 		const mdy = Math.abs(pixelPos[1] - mpy);
@@ -150,9 +152,7 @@ function newPaint() {
 function main() {
 	init();
 	document.addEventListener('mousemove', handleMouseMove);
-	console.log(canvas);
 	newPaint();
-	console.log(render.canvas.getContext('2d'));
 	setInterval(() => {
 		newPaint();
 	}, 1000 / canvasFps);
