@@ -23,7 +23,7 @@ function initCircle() {
 	const noiseRandomWidth = innerNoiseWidth;
 	const noiseModifier = 8;
 	const widthHalf = width / 2;
-	const padding = 2;
+	const padding = 2.5;
 
 	const center = [canvasWidth / 2, canvasHeight / 2];
 	const radius = canvasWidth / 2 - width / 2 - margin + padding;
