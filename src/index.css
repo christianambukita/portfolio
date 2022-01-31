@@ -2,7 +2,7 @@
 	/* --main-color:  */
 	--scrollbar-width: 8px;
 	--scrollbar-color-b: #000;
-	--scrollbar-color-t: #666;
+	--scrollbar-color-t: white;
 	--section-color: hsl(0, 0%, 10%);
 	--element-color: hsla(0, 0%, 0%, 0.5);
 	--element-color-f: hsla(0, 0%, 0%, 0.7);
@@ -17,6 +17,7 @@
 
 body {
 	background: black;
+	color: white;
 	margin: 0;
 	padding: 0;
 	font-family: 'Montserrat', sans-serif;
@@ -46,14 +47,16 @@ nav {
 	position: absolute;
 	top: 0;
 	left: 0;
-	background: var(--navbar-color);
 	justify-content: flex-end !important;
 	z-index: 10;
 }
 
+nav:hover {
+	background: var(--navbar-color);
+}
+
 nav ul {
 	list-style: none;
-	color: white;
 }
 nav li {
 	width: 80px;
@@ -77,10 +80,19 @@ header {
 	padding-top: var(--navbar-height);
 }
 
+h2 {
+	font-size: 3em;
+	margin-bottom: 2em;
+}
+
 @media (min-width: 800px) {
 	section,
 	header {
 		scroll-snap-align: center;
+	}
+
+	h2 {
+		margin-bottom: 3em;
 	}
 }
 
@@ -118,6 +130,7 @@ header {
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
+	border-radius: 4px;
 	background: var(--scrollbar-color-t);
 }
 
@@ -141,10 +154,6 @@ header {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-}
-
-h2 {
-	font-size: 3em;
 }
 
 .project {
@@ -243,19 +252,21 @@ h2 {
 	height: 4em;
 	border-radius: 2em;
 	border: 1px solid white;
-}
-
-.eye-icon {
-	height: 1.6em !important;
+	background: transparent;
+	z-index: 1;
+	position: relative;
+	overflow: hidden;
 }
 
 .project a:hover {
-	background: white;
 	color: black;
 }
 
-.project a:hover .eye-icon {
-	src: 'img/icons/eye-cover.svg';
+.btn-canvas {
+	position: absolute;
+	z-index: -1;
+	width: calc(100% + 1px);
+	height: 100%;
 }
 
 .project h3 {
