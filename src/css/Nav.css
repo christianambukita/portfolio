@@ -1,0 +1,21 @@
+nav {
+	height: var(--navbar-height);
+	width: calc(100% - var(--scrollbar-width));
+	position: absolute;
+	top: 0;
+	left: 0;
+	justify-content: flex-end !important;
+	z-index: 10;
+}
+
+nav:hover {
+	background: var(--navbar-color);
+}
+
+nav ul {
+	list-style: none;
+}
+nav li {
+	width: 80px;
+	text-align: center;
+}

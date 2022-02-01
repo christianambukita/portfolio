@@ -1,0 +1,84 @@
+:root {
+	/* --main-color:  */
+	--scrollbar-width: 8px;
+	--scrollbar-color-b: #000;
+	--scrollbar-color-t: white;
+	--section-color: hsl(0, 0%, 10%);
+	--element-color: hsla(0, 0%, 0%, 0.5);
+	--element-color-f: hsla(0, 0%, 0%, 0.7);
+	--navbar-color: hsla(0, 0%, 10%, 0.95);
+	--navbar-height: 60px;
+	--section-padding: 20px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: black;
+	color: white;
+	margin: 0;
+	padding: 0;
+	font-family: 'Montserrat', sans-serif;
+	overflow: hidden;
+}
+
+main {
+	top: 0;
+	padding: 0;
+	height: 100vh;
+	width: 100%;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.flex-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+a:visited {
+	color: inherit;
+}
+
+h2 {
+	font-size: 3em;
+	margin-bottom: 2em;
+}
+
+@media (min-width: 800px) {
+	section,
+	header {
+		scroll-snap-align: center;
+	}
+
+	h2 {
+		margin-bottom: 3em;
+	}
+}
+
+/* scrollbar */
+.scrollbar {
+	overflow-y: scroll;
+	scroll-behavior: smooth;
+	scrollbar-width: thin;
+	scrollbar-color: var(--scrollbar-color-t) var(--scrollbar-color-b);
+	scroll-snap-type: y proximity;
+}
+
+.scrollbar::-webkit-scrollbar {
+	width: var(--scrollbar-width);
+	background-color: var(--scrollbar-color-b);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background: var(--scrollbar-color-t);
+}
