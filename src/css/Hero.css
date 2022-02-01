@@ -8,6 +8,14 @@ header {
 	padding-top: var(--navbar-height);
 }
 
+.art-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 600px;
+	height: 600px;
+}
+
 /* circle animation */
 .clipping-mask {
 	box-sizing: border-box;

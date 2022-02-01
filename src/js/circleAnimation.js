@@ -1,72 +1,105 @@
 import { GPU } from 'gpu.js';
 
-const canvasFps = 60;
-const canvasPos = {
-	top: undefined,
-	left: undefined,
-};
-const mousePos = [undefined, undefined];
-let canvasWidth, canvasHeight;
+class circleAnimation {
+	constructor(canvasId, fps, circleKernel = kernel) {
+		this.canvasId = canvasId;
+		this.canvas = undefined;
+		this.fps = fps;
+		this.canvasPos = [];
+		this.mousePos = [undefined, undefined];
+		this.circleData = undefined;
+		this.kernel = circleKernel;
+		this.render = undefined;
+	}
 
-function initCircle(canvasWidth, canvasHeight) {
-	const width = 1.2;
-	const margin = 100;
-	const innerNoiseWidth = 100;
-	const noiseRandomWidth = innerNoiseWidth;
-	const noiseModifier = 8;
-	const widthHalf = width / 2;
-	const padding = 2.5;
+	setMousePos(newPos) {
+		this.mousePos = newPos;
+	}
 
-	const center = [canvasWidth / 2, canvasHeight / 2];
-	const radius = canvasWidth / 2 - width / 2 - margin + padding;
+	setCanvasPos() {
+		const { top, left } = this.canvas.getBoundingClientRect();
+		this.canvasPos = [left, top];
+	}
 
-	const noiseOutterBorder = radius - widthHalf;
-	const noiseInnerBorder = radius - widthHalf - noiseRandomWidth;
+	init() {
+		this.canvas = document.getElementById(this.canvasId);
+		this.setCanvasPos();
+		this.initCircle();
+		this.render = this.getRender();
+	}
 
-	return {
-		center,
-		noiseOutterBorder,
-		noiseInnerBorder,
-		noiseModifier,
-		w: canvasWidth,
-		h: canvasHeight,
-	};
-}
+	initCircle() {
+		const width = 1.2;
+		const margin = 100;
+		const innerNoiseWidth = 100;
+		const noiseRandomWidth = innerNoiseWidth;
+		const noiseModifier = 8;
+		const widthHalf = width / 2;
+		const padding = 2.5;
 
-function getRender(canvasId, kernel) {
-	const canvas = document.getElementById(canvasId);
-	const gl = canvas.getContext('webgl2');
-	const gpu = new GPU({
-		canvas: canvas,
-		context: gl,
-	});
+		const { width: canvasWidth, height: canvasHeight } = this.canvas;
+		const center = [canvasWidth / 2, canvasHeight / 2];
+		const radius = canvasWidth / 2 - width / 2 - margin + padding;
 
-	({ width: canvasWidth, height: canvasHeight } = canvas);
-	canvasPos[0] = left;
-	canvasPos[1] = top;
+		const noiseOutterBorder = radius - widthHalf;
+		const noiseInnerBorder = radius - widthHalf - noiseRandomWidth;
 
-	const { top, left } = canvas.getBoundingClientRect();
-	const circleData = initCircle(canvasWidth, canvasHeight);
+		this.circleData = {
+			center,
+			noiseOutterBorder,
+			noiseInnerBorder,
+			noiseModifier,
+			w: canvasWidth,
+			h: canvasHeight,
+		};
+	}
 
-	return gpu
-		.createKernel(kernel)
-		.setConstants(circleData)
-		.setOutput([canvasWidth, canvasHeight])
-		.setGraphical(true);
+	getRender() {
+		const gl = this.canvas.getContext('webgl2');
+		const gpu = new GPU({
+			canvas: this.canvas,
+			context: gl,
+		});
+
+		const { width: canvasWidth, height: canvasHeight } = this.canvas;
+
+		return gpu
+			.createKernel(this.kernel)
+			.setConstants(this.circleData)
+			.setOutput([canvasWidth, canvasHeight])
+			.setGraphical(true);
+	}
+
+	getMouseCanvasPos() {
+		const x = this.mousePos[0] - Math.floor(this.canvasPos[0]);
+		const y = this.mousePos[1] - Math.floor(this.canvasPos[1]);
+		let isMouseOverCanvas = true;
+		if (x < 0 || y < 0) isMouseOverCanvas = false;
+		if (x > this.canvas.width || y > this.canvas.height)
+			isMouseOverCanvas = false;
+		if (isMouseOverCanvas) return [x, y];
+		return null;
+	}
+
+	newPaint() {
+		const mouseCanvasPos = this.getMouseCanvasPos();
+		const mouseOver = mouseCanvasPos ? true : false;
+		if (mouseOver) this.render(mouseOver, mouseCanvasPos[0], mouseCanvasPos[1]);
+		else this.render(mouseOver, 0, 0);
+	}
+
+	initCircleAnimation() {
+		this.init();
+		this.newPaint(this.render);
+		setInterval(() => {
+			this.newPaint(this.render);
+		}, 1000 / this.canvasFps);
+	}
 }
 
 function handleMouseMove(e) {
 	mousePos[0] = e.clientX;
 	mousePos[1] = e.clientY;
-}
-function getMouseCanvasPos() {
-	const x = mousePos[0] - Math.floor(canvasPos[0]);
-	const y = mousePos[1] - Math.floor(canvasPos[1]);
-	let isMouseOverCanvas = true;
-	if (x < 0 || y < 0) isMouseOverCanvas = false;
-	if (x > canvasWidth || y > canvasHeight) isMouseOverCanvas = false;
-	if (isMouseOverCanvas) return [x, y];
-	return null;
 }
 
 const kernel = function (mouseOver, mpx, mpy) {
@@ -125,19 +158,4 @@ const kernel = function (mouseOver, mpx, mpy) {
 	this.color(s, s, s, 1);
 };
 
-function newPaint(render) {
-	const mouseCanvasPos = getMouseCanvasPos();
-	const mouseOver = mouseCanvasPos ? true : false;
-	if (mouseOver) render(mouseOver, mouseCanvasPos[0], mouseCanvasPos[1]);
-	else render(mouseOver, 0, 0);
-}
-
-export default function initCircleAnimation(canvasId) {
-	const render = getRender(canvasId, kernel);
-
-	document.addEventListener('mousemove', handleMouseMove);
-	newPaint(render);
-	setInterval(() => {
-		newPaint(render);
-	}, 1000 / canvasFps);
-}
+export default circleAnimation;

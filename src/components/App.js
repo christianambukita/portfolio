@@ -9,8 +9,8 @@ function App() {
 	return (
 		<div className='app'>
 			<Nav />
-			<main className='scrollbar'>
-				<Hero />
+			<main id='main' className='scrollbar'>
+				<Hero scrollElementId='main' />
 				<MyWork />
 				<About />
 			</main>
