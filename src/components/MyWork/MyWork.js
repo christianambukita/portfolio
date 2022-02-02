@@ -21,7 +21,7 @@ export default function MyWork() {
 										<a
 											onMouseEnter={() => animateButton(`canvas-${i}-g`, true)}
 											onMouseLeave={() => animateButton(`canvas-${i}-g`, false)}
-											href=''>
+											href={project.githubURL}>
 											<canvas
 												className='btn-canvas'
 												id={`canvas-${i}-g`}></canvas>
@@ -30,7 +30,7 @@ export default function MyWork() {
 										<a
 											onMouseEnter={() => animateButton(`canvas-${i}-l`, true)}
 											onMouseLeave={() => animateButton(`canvas-${i}-l`, false)}
-											href=''>
+											href={project.liveURL}>
 											<canvas
 												className='btn-canvas'
 												id={`canvas-${i}-l`}></canvas>
