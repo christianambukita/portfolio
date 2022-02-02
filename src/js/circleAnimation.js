@@ -97,10 +97,10 @@ class circleAnimation {
 	}
 }
 
-function handleMouseMove(e) {
-	mousePos[0] = e.clientX;
-	mousePos[1] = e.clientY;
-}
+// function handleMouseMove(e) {
+// 	mousePos[0] = e.clientX;
+// 	mousePos[1] = e.clientY;
+// }
 
 const kernel = function (mouseOver, mpx, mpy) {
 	const x = this.thread.x;
