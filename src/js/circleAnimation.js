@@ -1,6 +1,6 @@
 import { GPU } from 'gpu.js';
 
-class circleAnimation {
+class CircleAnimation {
 	constructor(canvasId, fps, circleKernel = kernel) {
 		this.canvasId = canvasId;
 		this.canvas = undefined;
@@ -88,7 +88,7 @@ class circleAnimation {
 		else this.render(mouseOver, 0, 0);
 	}
 
-	initCircleAnimation() {
+	initAnimation() {
 		this.init();
 		this.newPaint(this.render);
 		setInterval(() => {
@@ -96,11 +96,6 @@ class circleAnimation {
 		}, 1000 / this.canvasFps);
 	}
 }
-
-// function handleMouseMove(e) {
-// 	mousePos[0] = e.clientX;
-// 	mousePos[1] = e.clientY;
-// }
 
 const kernel = function (mouseOver, mpx, mpy) {
 	const x = this.thread.x;
@@ -158,4 +153,4 @@ const kernel = function (mouseOver, mpx, mpy) {
 	this.color(s, s, s, 1);
 };
 
-export default circleAnimation;
+export default CircleAnimation;
