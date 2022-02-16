@@ -134,7 +134,7 @@ class IntroAnimation {
 		const bezierP3 = mapPoints(bezierPoints3, 1);
 		const bezierP4 = mapPoints(bezierPoints4, 1);
 
-		const noiseSize = [75, 400];
+		const noiseSize = [30, 500];
 		const textSize = [55, 277];
 		this.introData = {
 			center,
@@ -180,7 +180,7 @@ class IntroAnimation {
 		let time = 0;
 		//this.render(time);
 		setInterval(() => {
-			this.render(time, 0, 2000, 0, 0);
+			this.render(time, 0, 1000, 0, 0);
 			time += timeStep;
 			// console.log(time);
 		}, timeStep);
@@ -288,61 +288,57 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		}
 	}
 
-	// //PHASE 2
-	// const phase2TimeOverlap = 1500;
-	// const isP2 = time > phase0 + phase1 - phase2TimeOverlap;
-	// if (isP2) {
-	// 	const time2 = time - phase0 - phase1 + phase2TimeOverlap;
-	// 	const dxAnimDuration = 2000;
-	// 	let dXBez2 = 1;
-	// 	let randomBez = 1;
-	// 	let randomAnimDuration = 1500;
+	//PHASE 2
+	const phase2TimeOverlap = 10;
+	const isP2 = time > phase0 + phase1 - phase2TimeOverlap;
+	if (isP2) {
+		const time2 = time - phase0 - phase1 + phase2TimeOverlap;
+		const dxAnimDuration = 2000;
+		let dXBez2 = 1;
+		let randomBez = 1;
+		let randomAnimDuration = 500;
+		let out = 0;
+		let randomMod = 0;
 
-	// 	const widthDiff = this.constants.noiseSize[1] - this.constants.textSize[1];
+		const widthDiff = this.constants.noiseSize[1] - this.constants.textSize[1];
+		const heightDiff = this.constants.noiseSize[0] - this.constants.textSize[0];
 
-	// 	const dX = (dXBez2 * this.constants.noiseSize[0]) / 2;
-	// 	const dY = this.constants.noiseSize[1] - widthDiff;
+		if (time2 < randomAnimDuration)
+			randomBez = getBezierVal(
+				randomAnimDuration,
+				time2,
+				this.constants.bezierP1[0],
+				this.constants.bezierP1[1],
+				this.constants.bezierP1[2],
+				this.constants.bezierP1[3]
+			);
 
-	// 	// Distance from x center axis
-	// 	const _dX = Math.abs(pixelPos[1] - this.constants.center[1]);
-	// 	if (_dX < dX) dXMod = Math.pow(1 - _dX / dX, 1);
-	// 	// Distance from y center axis
-	// 	const _dY = Math.abs(pixelPos[0] - this.constants.center[0]);
-	// 	if (_dY < dY) dYMod = Math.pow(1 - _dY / dY, 1);
+		const dX = this.constants.noiseSize[0] - (1 - randomBez) * heightDiff;
+		const dY = this.constants.noiseSize[1] - (1 - randomBez) * widthDiff;
 
-	// 	let out = 0;
-	// 	let randomMod = 0;
-	// 	if (dXMod > 0 && dYMod > 0) {
-	// 		if (time2 < randomAnimDuration)
-	// 			randomBez = getBezierVal(
-	// 				randomAnimDuration,
-	// 				time2,
-	// 				this.constants.bezierP4[0],
-	// 				this.constants.bezierP4[1],
-	// 				this.constants.bezierP4[2],
-	// 				this.constants.bezierP4[3]
-	// 			);
-	// 		const limit = 0.2 * randomBez + 0.005;
-	// 		let combined = dXMod * dYMod;
-	// 		combined = combined > limit ? limit : combined;
-	// 		const testOut = combined;
-	// 		const randomMod1 = Math.random();
-	// 		const randomMod2 = Math.random();
-	// 		const condition = randomMod1 < testOut && randomMod2 < testOut;
-	// 		out = condition ? 1 : 0;
+		// Distance from x center axis
+		const _dX = Math.abs(pixelPos[1] - this.constants.center[1]);
+		if (_dX < dX) dXMod = Math.pow(1 - _dX / dX, 1 + 1 * randomBez);
+		// Distance from y center axis
+		const _dY = Math.abs(pixelPos[0] - this.constants.center[0]);
+		if (_dY < dY) dYMod = Math.pow(1 - _dY / dY, 1);
 
-	// 		const transitionTime = 100;
-	// 		if (time > phase1 + phase0 - transitionTime) {
-	// 			opacity = 1;
-	// 		}
-	// 		if (out > 0) {
-	// 			pixelColor = 1;
-	// 			opacity = 1;
-	// 		}
-	// 	}
+		if (dXMod > 0 && dYMod > 0) {
+			const limit = 0.2 + 0.005 + 0.5 * randomBez;
+			let combined = dXMod * dYMod;
+			combined = combined > limit ? limit : combined;
+			const testOut = combined;
+			const randomMod1 = Math.random();
+			const randomMod2 = Math.random();
+			const condition = randomMod1 < testOut && randomMod2 < testOut;
+			out = condition ? 1 : 0;
+		}
 
-	// 	// pixelColor = Math.random() * 2 < (1 - dXBez2) * testOut ? 1 : 0;
-	// }
+		opacity = 1;
+		pixelColor = out;
+
+		// pixelColor = Math.random() * 2 < (1 - dXBez2) * testOut ? 1 : 0;
+	}
 
 	// //PHASE 3
 	// const circleBlendMargin = r;
