@@ -180,7 +180,8 @@ class IntroAnimation {
 		let time = 0;
 		//this.render(time);
 		setInterval(() => {
-			this.render(time, 0, 1000, 0, 0);
+			this.render(time, 0, 1000, 500, 0);
+			// this.render(time, 0, 0, 0, 0);
 			time += timeStep;
 			// console.log(time);
 		}, timeStep);
@@ -204,7 +205,8 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 	let opacity = 0;
 
 	// PHASE 1
-	const isP1 = time > phase0 && time < phase0 + phase1;
+	const p0ToP1 = phase0 + phase1;
+	const isP1 = time > phase0 && time < p0ToP1;
 	if (isP1) {
 		const time1 = time - phase0;
 		let randomBez2 = 0;
@@ -290,13 +292,12 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 
 	//PHASE 2
 	const phase2TimeOverlap = 10;
-	const isP2 = time > phase0 + phase1 - phase2TimeOverlap;
+	const p0ToP2 = phase0 + phase1 + phase2 - phase2TimeOverlap;
+	const isP2 = time > p0ToP1 - phase2TimeOverlap && time < p0ToP2;
 	if (isP2) {
 		const time2 = time - phase0 - phase1 + phase2TimeOverlap;
-		const dxAnimDuration = 2000;
-		let dXBez2 = 1;
 		let randomBez = 1;
-		let randomAnimDuration = 500;
+		let randomAnimDuration = phase2;
 		let out = 0;
 		let randomMod = 0;
 
@@ -327,10 +328,9 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 			const limit = 0.2 + 0.005 + 0.5 * randomBez;
 			let combined = dXMod * dYMod;
 			combined = combined > limit ? limit : combined;
-			const testOut = combined;
 			const randomMod1 = Math.random();
 			const randomMod2 = Math.random();
-			const condition = randomMod1 < testOut && randomMod2 < testOut;
+			const condition = randomMod1 < combined && randomMod2 < combined;
 			out = condition ? 1 : 0;
 		}
 
@@ -340,76 +340,99 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		// pixelColor = Math.random() * 2 < (1 - dXBez2) * testOut ? 1 : 0;
 	}
 
-	// //PHASE 3
-	// const circleBlendMargin = r;
-	// 		//Distance from center
-	// 		const cDx = Math.abs(pixelPos[0] - this.constants.center[0]);
-	// 		const cDy = Math.abs(pixelPos[1] - this.constants.center[1]);
-	// 		const circleDistance = Math.sqrt(Math.pow(cDx, 2) + Math.pow(cDy, 2));
-	// 		if (circleDistance < r) centerMod = 0;
+	//PHASE 3
+	const isP3 = time > p0ToP2;
+	if (isP3) {
+		const time3 = time - p0ToP2;
+		let rBez = 0;
+		let oBez = 0;
+		const rAnimDuration = 4000;
+		const oAnimDuration = 500;
+		if (time3 < oAnimDuration) {
+			oBez = getBezierVal(
+				oAnimDuration,
+				time3,
+				this.constants.bezierP3[0],
+				this.constants.bezierP3[1],
+				this.constants.bezierP3[2],
+				this.constants.bezierP3[3]
+			);
+		} else {
+			oBez = 1;
+		}
+		if (time > oAnimDuration && time3 < rAnimDuration + oAnimDuration) {
+			rBez = getBezierVal(
+				rAnimDuration,
+				time3 - oAnimDuration,
+				this.constants.bezierP1[0],
+				this.constants.bezierP1[1],
+				this.constants.bezierP1[2],
+				this.constants.bezierP1[3]
+			);
+		}
+		if (time3 > rAnimDuration + oAnimDuration) {
+			rBez = 1;
+		}
 
-	// 		// //Circle margin
-	// 		const mCondition1 = circleDistance < r + circleMargin;
-	// 		const mCondition2 = circleDistance > r;
-	// 		if (mCondition1 && mCondition2) {
-	// 			const ratio = (circleDistance - r) / circleMargin;
-	// 			let condition = ratio < Math.pow(Math.random(), 3);
-	// 			if (condition) {
-	// 				marginMod = Math.pow(1 - ratio, 2);
-	// 			}
-	// 		}
+		r = 200 * rBez;
+		const circleBlendMargin = r;
+		//Distance from center
+		const cDx = Math.abs(pixelPos[0] - this.constants.center[0]);
+		const cDy = Math.abs(pixelPos[1] - this.constants.center[1]);
+		const circleDistance = Math.sqrt(Math.pow(cDx, 2) + Math.pow(cDy, 2));
+		if (circleDistance < r) centerMod = 0;
 
-	// 		// //circleBlend
-	// 		const bCondition1 = circleDistance < r + circleBlendMargin;
-	// 		const bCondition2 = circleDistance > r;
-	// 		if (bCondition1 && bCondition2) {
-	// 			const ratio = (circleDistance - r) / circleBlendMargin;
-	// 			circleBlendMod = Math.pow(1 - ratio, 3);
-	// 		}
+		// //Circle margin
+		const mCondition1 = circleDistance < r + circleMargin;
+		const mCondition2 = circleDistance > r;
+		if (mCondition1 && mCondition2) {
+			const ratio = (circleDistance - r) / circleMargin;
+			let condition = ratio < Math.pow(Math.random(), 3);
+			if (condition) {
+				marginMod = Math.pow(1 - ratio, 2);
+				if (r < 1) marginMod = 0;
+			}
+		}
 
-	//PHASE 2
-	// const phase2TimeOverlap = 2000;
-	// const isP2 = time > phase0 + phase1 - phase2TimeOverlap;
-	// if (isP2) {
-	// 	const time2 = time - phase0 - phase1 + phase2TimeOverlap;
-	// 	const blendAmplifier = r * 2;
-	// 	const dxAnimDuration = 4000;
-	// 	let dXBez2 = 1;
+		// //circleBlend
+		const bCondition1 = circleDistance < r + circleBlendMargin;
+		const bCondition2 = circleDistance > r;
+		if (bCondition1 && bCondition2) {
+			const ratio = (circleDistance - r) / circleBlendMargin;
+			circleBlendMod = Math.pow(1 - ratio, 3);
+		}
 
-	// 	if (time2 < dxAnimDuration) {
-	// 		dXBez2 = getBezierVal(
-	// 			dxAnimDuration,
-	// 			time2,
-	// 			this.constants.bezierP1[0],
-	// 			this.constants.bezierP1[1],
-	// 			this.constants.bezierP1[2],
-	// 			this.constants.bezierP1[3]
-	// 		);
-	// 	}
+		const blendAmplifier = r * 2;
 
-	// 	// Distance from x center axis
-	// 	const _dX = Math.abs(pixelPos[1] - this.constants.center[1]);
-	// 	const dxA =
-	// 		dXBez2 * this.constants.noiseSize[0] + blendAmplifier * circleBlendMod;
-	// 	if (_dX < dxA) dXMod = Math.pow(1 - _dX / dxA, 3);
-	// 	// Distance from y center axis
-	// 	const _dY = Math.abs(pixelPos[0] - this.constants.center[0]);
-	// 	if (_dY < this.constants.noiseSize[1])
-	// 		dYMod = Math.pow(1 - _dY / this.constants.noiseSize[1], 1.2);
+		// Distance from x center axis
+		const _dX = Math.abs(pixelPos[1] - this.constants.center[1]);
+		const dxA = this.constants.noiseSize[0] + blendAmplifier * circleBlendMod;
+		if (_dX < dxA) dXMod = Math.pow(1 - _dX / dxA, 2);
+		// Distance from y center axis
+		const _dY = Math.abs(pixelPos[0] - this.constants.center[0]);
+		if (_dY < this.constants.noiseSize[1])
+			dYMod = Math.pow(1 - _dY / this.constants.noiseSize[1], 1);
 
-	// 	let out = 0;
-	// 	if (dXMod > 0 && dYMod > 0) {
-	// 		const testOut = Math.pow(dXMod * dYMod * centerMod, 1);
-	// 		out = Math.random() + 0.004 < testOut ? testOut * dXBez2 : 0;
-	// 	}
+		let out = 0;
+		if (dXMod > 0 && dYMod > 0) {
+			const limit = 0.705;
+			let combined = dXMod * dYMod * centerMod;
+			combined = combined > limit ? limit : combined;
+			const randomMod1 = Math.random();
+			const randomMod2 = Math.random();
+			const condition = randomMod1 < combined && randomMod2 < combined;
+			out = condition ? combined : 0;
+		}
 
-	// 	if (marginMod > 0) out = marginMod;
+		opacity = 1;
 
-	// 	if (out > 0) {
-	// 		pixelColor = out;
-	// 		opacity = 1;
-	// 	}
-	// }
+		if (marginMod > 0) out = marginMod;
+
+		if (out > 0) {
+			const outMod = out * oBez + 1 * (1 - oBez);
+			pixelColor = outMod;
+		}
+	}
 
 	this.color(pixelColor, pixelColor, pixelColor, opacity);
 };
