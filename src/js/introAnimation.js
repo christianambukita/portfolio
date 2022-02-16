@@ -205,10 +205,10 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 
 	// PHASE 1
 	const isP1 = time > phase0 && time < phase0 + phase1;
-	if (time > 0) {
+	if (isP1) {
 		const time1 = time - phase0;
 		let randomBez2 = 0;
-		let randomBez3 = 1;
+		let randomBez3 = 0;
 		let randomBez = 1;
 		let randomAnimDuration2 = (phase1 * 4) / 6;
 		let randomAnimDuration = (phase1 * 5) / 6;
@@ -238,6 +238,7 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 
 		let out = 0;
 
+		// Edge of transparent pixels shrinking
 		if (_dXMod > 0 && _dYMod > 0) {
 			if (time1 < randomAnimDuration)
 				randomBez = getBezierVal(
@@ -255,17 +256,21 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 			out = randomMod ? 1 : 0;
 		}
 
+		// White pixels amoun growing
+		const randomAnimDuration3 = (phase1 * 1.5) / 2;
+		const anim3Delay = phase1 / 4;
 		let out2 = 0;
 		if (_dXMod > 0 && _dYMod > 0) {
-			if (time1 < 2000)
+			if (time1 > anim3Delay && time1 < randomAnimDuration3 + anim3Delay)
 				randomBez3 = getBezierVal(
-					2000,
-					time1,
-					this.constants.bezierP4[0],
-					this.constants.bezierP4[1],
-					this.constants.bezierP4[2],
-					this.constants.bezierP4[3]
+					randomAnimDuration3,
+					time1 - anim3Delay,
+					this.constants.bezierP2[0],
+					this.constants.bezierP2[1],
+					this.constants.bezierP2[2],
+					this.constants.bezierP2[3]
 				);
+			if (time1 > anim3Delay + randomAnimDuration3) randomBez3 = 1;
 			const limit = 0.2 * randomBez3 + 0.005;
 			let combined = _dXMod * _dYMod;
 			combined = combined > limit ? limit : combined;
