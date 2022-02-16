@@ -1,3 +1,17 @@
 .intro-container {
-	background-color: aquamarine;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 1000px;
+	height: 600px;
+}
+.intro-container h1 {
+	font-size: 6em;
+	margin: 0;
+}
+#intro-canvas {
+	width: 100%;
+	height: 100%;
+	position: absolute;
 }
