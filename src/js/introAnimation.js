@@ -134,8 +134,8 @@ class IntroAnimation {
 		const bezierP3 = mapPoints(bezierPoints3, 1);
 		const bezierP4 = mapPoints(bezierPoints4, 1);
 
-		const noiseSize = [30, 500];
-		const textSize = [55, 277];
+		const noiseSize = [25, 500];
+		const textSize = [35, 277];
 		this.introData = {
 			center,
 			canvasWidth,
@@ -175,16 +175,22 @@ class IntroAnimation {
 	}
 
 	initAnimation() {
+		const phase0 = 0;
+		const phase1 = 1500;
+		const phase2 = 400;
+		const phase3 = 2500;
+
 		this.init();
 		const timeStep = 1000 / this.fps;
 		let time = 0;
 		//this.render(time);
 		setInterval(() => {
-			this.render(time, 0, 1000, 500, 0);
+			this.render(time, phase0, phase1, phase2, phase3);
 			// this.render(time, 0, 0, 0, 0);
 			time += timeStep;
 			// console.log(time);
 		}, timeStep);
+		return phase0 + phase1 + phase2 + phase3;
 	}
 }
 
@@ -292,7 +298,9 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 
 	//PHASE 2
 	const phase2TimeOverlap = 10;
-	const p0ToP2 = phase0 + phase1 + phase2 - phase2TimeOverlap;
+	const phase2AfterDelay = 500;
+	const p0ToP2 =
+		phase0 + phase1 + phase2 - phase2TimeOverlap + phase2AfterDelay;
 	const isP2 = time > p0ToP1 - phase2TimeOverlap && time < p0ToP2;
 	if (isP2) {
 		const time2 = time - phase0 - phase1 + phase2TimeOverlap;
@@ -344,9 +352,12 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 	const isP3 = time > p0ToP2;
 	if (isP3) {
 		const time3 = time - p0ToP2;
+		const circleMax = 200;
+		const circleBorder = 3;
 		let rBez = 0;
 		let oBez = 0;
-		const rAnimDuration = 4000;
+		let mBez = 0;
+		const rAnimDuration = 2000;
 		const oAnimDuration = 500;
 		if (time3 < oAnimDuration) {
 			oBez = getBezierVal(
@@ -360,7 +371,7 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		} else {
 			oBez = 1;
 		}
-		if (time > oAnimDuration && time3 < rAnimDuration + oAnimDuration) {
+		if (time3 > oAnimDuration && time3 < rAnimDuration + oAnimDuration) {
 			rBez = getBezierVal(
 				rAnimDuration,
 				time3 - oAnimDuration,
@@ -373,8 +384,21 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		if (time3 > rAnimDuration + oAnimDuration) {
 			rBez = 1;
 		}
+		if (time3 > 500) {
+			mBez = getBezierVal(
+				500,
+				time3 - 500,
+				this.constants.bezierP1[0],
+				this.constants.bezierP1[1],
+				this.constants.bezierP1[2],
+				this.constants.bezierP1[3]
+			);
+		}
+		if (time3 > 1000) {
+			mBez = 1;
+		}
 
-		r = 200 * rBez;
+		r = (circleMax - circleBorder) * rBez;
 		const circleBlendMargin = r;
 		//Distance from center
 		const cDx = Math.abs(pixelPos[0] - this.constants.center[0]);
@@ -383,13 +407,14 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		if (circleDistance < r) centerMod = 0;
 
 		// //Circle margin
-		const mCondition1 = circleDistance < r + circleMargin;
+
+		const mCondition1 = circleDistance < r + (circleMargin * (1 - rBez) + 6);
 		const mCondition2 = circleDistance > r;
 		if (mCondition1 && mCondition2) {
-			const ratio = (circleDistance - r) / circleMargin;
-			let condition = ratio < Math.pow(Math.random(), 3);
+			const ratio = (circleDistance - r) / (circleMargin * (1 - rBez) + 6);
+			let condition = ratio < Math.pow(Math.random(), 1 + 2 * (1 - rBez));
 			if (condition) {
-				marginMod = Math.pow(1 - ratio, 2);
+				marginMod = Math.pow(1 - ratio, 1 + 1 * (1 - rBez));
 				if (r < 1) marginMod = 0;
 			}
 		}
@@ -411,8 +436,9 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		// Distance from y center axis
 		const _dY = Math.abs(pixelPos[0] - this.constants.center[0]);
 		if (_dY < this.constants.noiseSize[1])
-			dYMod = Math.pow(1 - _dY / this.constants.noiseSize[1], 1);
-
+			dYMod =
+				Math.pow(1 - _dY / this.constants.noiseSize[1], 1 + 3 * rBez) *
+				(1 - rBez / 1.5);
 		let out = 0;
 		if (dXMod > 0 && dYMod > 0) {
 			const limit = 0.705;

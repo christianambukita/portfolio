@@ -7,3 +7,15 @@ header {
 	position: relative;
 	padding-top: var(--navbar-height);
 }
+
+.transition {
+	position: absolute;
+	opacity: 0;
+
+	transition: opacity 1.5s ease-in;
+	transition-delay: 0.5s;
+}
+
+.visible {
+	opacity: 1;
+}
