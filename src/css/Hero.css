@@ -13,7 +13,7 @@ header {
 	opacity: 0;
 
 	transition: opacity 1.5s ease-in;
-	transition-delay: 0.5s;
+	transition-delay: 1.2s;
 }
 
 .visible {

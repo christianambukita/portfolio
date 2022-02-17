@@ -408,11 +408,14 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 
 		// //Circle margin
 
-		const mCondition1 = circleDistance < r + (circleMargin * (1 - rBez) + 6);
+		const mCondition1 = circleDistance < r + (circleMargin * (1 - rBez) + 8);
 		const mCondition2 = circleDistance > r;
 		if (mCondition1 && mCondition2) {
-			const ratio = (circleDistance - r) / (circleMargin * (1 - rBez) + 6);
-			let condition = ratio < Math.pow(Math.random(), 1 + 2 * (1 - rBez));
+			const ratio = (circleDistance - r) / (circleMargin * (1 - rBez) + 8);
+			let condition = true;
+			if (rBez < 1) {
+				condition = ratio < Math.pow(Math.random(), 1 + 2 * (1 - rBez));
+			}
 			if (condition) {
 				marginMod = Math.pow(1 - ratio, 1 + 1 * (1 - rBez));
 				if (r < 1) marginMod = 0;
@@ -441,13 +444,15 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 				(1 - rBez / 1.5);
 		let out = 0;
 		if (dXMod > 0 && dYMod > 0) {
-			const limit = 0.705;
-			let combined = dXMod * dYMod * centerMod;
-			combined = combined > limit ? limit : combined;
-			const randomMod1 = Math.random();
-			const randomMod2 = Math.random();
-			const condition = randomMod1 < combined && randomMod2 < combined;
-			out = condition ? combined : 0;
+			if (rBez < 1) {
+				const limit = 0.705;
+				let combined = dXMod * dYMod * centerMod;
+				combined = combined > limit ? limit : combined;
+				const randomMod1 = Math.random();
+				const randomMod2 = Math.random();
+				const condition = randomMod1 < combined && randomMod2 < combined;
+				out = condition ? combined : 0;
+			}
 		}
 
 		opacity = 1;
