@@ -8,11 +8,18 @@
 	height: 600px;
 	overflow: hidden;
 }
+
+.anim-end {
+	display: none;
+}
+
 .intro-container h1 {
-	font-size: 6em;
+	font-size: 4em;
+	font-weight: 200;
 	margin: 0;
-	position: absolute;
 	z-index: -1;
+	position: absolute;
+	align-items: center;
 }
 #intro-canvas {
 	width: 1000px;

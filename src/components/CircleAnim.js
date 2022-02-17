@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../css/CircleAnim.css';
 import CircleAnimation from '../js/circleAnimation';
 
 export default function CircleAnim({ scrollElementId }) {
 	const CANVAS_ID = 'circle-canvas';
 	const animationFps = 60;
-	const circle = new CircleAnimation(CANVAS_ID, animationFps);
+	const circle = useRef(new CircleAnimation(CANVAS_ID, animationFps));
 
 	useEffect(() => {
-		circle.initAnimation();
+		circle.current.initAnimation();
 		const scrollHandle = document.getElementById(scrollElementId);
-
-		const handleCanvasPos = () => circle.setCanvasPos();
+		const handleCanvasPos = () => circle.current.setCanvasPos();
 
 		window.addEventListener('resize', handleCanvasPos);
 		scrollHandle.addEventListener('scroll', handleCanvasPos);
@@ -22,9 +21,8 @@ export default function CircleAnim({ scrollElementId }) {
 	}, []);
 
 	function handleMouseMove(e) {
-		circle.setMousePos([e.clientX, e.clientY]);
+		circle.current.setMousePos([e.clientX, e.clientY]);
 	}
-
 	return (
 		<div className='art-container' onMouseMove={handleMouseMove}>
 			<div className='clipping-mask'>

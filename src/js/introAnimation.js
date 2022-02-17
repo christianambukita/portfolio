@@ -8,87 +8,28 @@ class IntroAnimation {
 		this.kernel = introKernel;
 		this.render = undefined;
 		this.introData = undefined;
+		this.textSize = [undefined, undefined];
 	}
 
+	setTextSize(textWidth, textHeight) {
+		this.textSize = [textHeight / 2, textWidth / 2];
+	}
 	init() {
 		this.canvas = document.getElementById(this.canvasId);
 		this.initIntroData();
 		this.render = this.getRender();
 	}
 
-	// multiplyMatrices(m1, m2, cols1, cols2) {
-	// 	const rows1 = m1.length / cols1;
-	// 	let result = [null];
-	// 	result = []; // gpu.js doesnt allow to create empty array "Cannot read properties of undefined (reading 'type')"
-	// 	for (let i = 0; i < rows1; i++) {
-	// 		for (let j = 0; j < cols2; j++) {
-	// 			let sum = 0;
-	// 			for (let k = 0; k < cols1; k++) {
-	// 				const m1el = m1[i * cols1 + k];
-	// 				const m2el = m2[j + k * cols2];
-	// 				sum += m1el * m2el;
-	// 				const it = i + k * cols2;
-	// 				console.log({ i, j, k, m1el, m2el, it });
-	// 			}
-	// 			result.push(sum);
-	// 		}
-	// 	}
-	// 	return result;
-	// }
-	// multiplyMatrices(m1, m2, cols1, cols2) {
-	// 	const rows1 = m1.length / cols1;
-	// 	let result = [];
-	// 	for (let i = 0; i < m1.length; i++) {
-	// 		let sum = 0;
-	// 		for (let j = 0; j < cols1; j++) {
-	// 			sum +=
-	// 				m1[j + Math.floor(i / cols1) * cols1] * m2[(i % cols1) + j * cols2];
-	// 			const it = (i % cols1) + j * cols2;
-	// 			console.log({ i, j, it });
-	// 		}
-	// 		result[i] = sum;
-	// 	}
-	// 	return result;
-	// }
-	// multiplyMatrices(m1, m2) {
-	// 	let result = [];
-	// 	for (let i = 0; i < m1.length; i++) {
-	// 		result[i] = [];
-	// 		for (let j = 0; j < m2[0].length; j++) {
-	// 			let sum = 0;
-	// 			for (let k = 0; k < m1[0].length; k++) {
-	// 				sum += m1[i][k] * m2[k][j];
-	// 			}
-	// 			result[i][j] = sum;
-	// 		}
-	// 	}
-	// 	return result;
-	// }
-
-	// getBezierVal(t, p0, p1, p2, p3) {
-	// 	const m1 = [[1, t, Math.pow(t, 2), Math.pow(t, 3)]];
-	// 	const m2 = [
-	// 		[1, 0, 0, 0],
-	// 		[-3, 3, 0, 0],
-	// 		[3, -6, 3, 0],
-	// 		[-1, 3, -3, 1],
-	// 	];
-	// 	const m3 = this.multiplyMatrices(m1, m2);
-	// 	const m4 = [p0, p1, p2, p3];
-
-	// 	return this.multiplyMatrices(m3, m4);
-	// }
-
 	getBezierVal(duration, time, p0, p1, p2, p3) {
 		const t = time / duration;
-		//functions used inside gpu.js kernel can't take arrays as
+		// Functions used inside gpu.js kernel can't take arrays as
 		//arguments(Unhandled argument type) thus points have to be passed separately
 		const b0 = p0 * Math.pow(1 - t, 3);
 		const b1 = p1 * 3 * Math.pow(1 - t, 2) * t;
 		const b2 = p2 * 3 * (1 - t) * Math.pow(t, 2);
 		const b3 = p3 * Math.pow(t, 3);
 		const bezierVal = b0 + b1 + b2 + b3;
-		//we are interested only in y value because it represents 0-1 progress value in animation
+		// We are interested only in y value because it represents 0-1 progress value in animation
 		return bezierVal;
 	}
 
@@ -134,8 +75,7 @@ class IntroAnimation {
 		const bezierP3 = mapPoints(bezierPoints3, 1);
 		const bezierP4 = mapPoints(bezierPoints4, 1);
 
-		const noiseSize = [25, 500];
-		const textSize = [35, 277];
+		const noiseSize = [this.textSize[0] / 2, 500];
 		this.introData = {
 			center,
 			canvasWidth,
@@ -147,7 +87,7 @@ class IntroAnimation {
 			bezierP3,
 			bezierP4,
 			noiseSize,
-			textSize,
+			textSize: this.textSize,
 		};
 	}
 
@@ -159,13 +99,6 @@ class IntroAnimation {
 		});
 		const { canvasWidth, canvasHeight } = this.introData;
 
-		function fRet() {
-			return 100;
-		}
-		function fTest(fIn) {
-			const a = fIn();
-			return a;
-		}
 		return gpu
 			.createKernel(this.kernel)
 			.setConstants(this.introData)
@@ -175,22 +108,25 @@ class IntroAnimation {
 	}
 
 	initAnimation() {
-		const phase0 = 0;
-		const phase1 = 1500;
+		const phase0 = 1500;
+		const phase1 = 1000;
 		const phase2 = 400;
 		const phase3 = 2500;
-
+		const afterDelay = 1200;
+		const transitionDuration = 1500;
+		const phasesDuration = phase0 + phase1 + phase2 + phase3;
+		const animDuration = phasesDuration + afterDelay + transitionDuration;
 		this.init();
 		const timeStep = 1000 / this.fps;
 		let time = 0;
 		//this.render(time);
-		setInterval(() => {
+		const interval = setInterval(() => {
 			this.render(time, phase0, phase1, phase2, phase3);
 			// this.render(time, 0, 0, 0, 0);
 			time += timeStep;
-			// console.log(time);
+			if (time > animDuration) clearInterval(interval);
 		}, timeStep);
-		return phase0 + phase1 + phase2 + phase3;
+		return { phasesDuration, animDuration };
 	}
 }
 
@@ -273,13 +209,13 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 				randomBez3 = getBezierVal(
 					randomAnimDuration3,
 					time1 - anim3Delay,
-					this.constants.bezierP2[0],
-					this.constants.bezierP2[1],
-					this.constants.bezierP2[2],
-					this.constants.bezierP2[3]
+					this.constants.bezierP1[0],
+					this.constants.bezierP1[1],
+					this.constants.bezierP1[2],
+					this.constants.bezierP1[3]
 				);
 			if (time1 > anim3Delay + randomAnimDuration3) randomBez3 = 1;
-			const limit = 0.2 * randomBez3 + 0.005;
+			const limit = 0.1 * randomBez3 + 0.005;
 			let combined = _dXMod * _dYMod;
 			combined = combined > limit ? limit : combined;
 			const testOut = combined;
@@ -333,7 +269,7 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		if (_dY < dY) dYMod = Math.pow(1 - _dY / dY, 1);
 
 		if (dXMod > 0 && dYMod > 0) {
-			const limit = 0.2 + 0.005 + 0.5 * randomBez;
+			const limit = 0.1 + 0.005 + 0.5 * randomBez;
 			let combined = dXMod * dYMod;
 			combined = combined > limit ? limit : combined;
 			const randomMod1 = Math.random();
@@ -357,8 +293,8 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		let rBez = 0;
 		let oBez = 0;
 		let mBez = 0;
-		const rAnimDuration = 2000;
-		const oAnimDuration = 500;
+		const rAnimDuration = (phase3 * 4) / 5;
+		const oAnimDuration = phase3 / 5;
 		if (time3 < oAnimDuration) {
 			oBez = getBezierVal(
 				oAnimDuration,
@@ -384,17 +320,17 @@ const kernel = function (time, phase0, phase1, phase2, phase3) {
 		if (time3 > rAnimDuration + oAnimDuration) {
 			rBez = 1;
 		}
-		if (time3 > 500) {
+		if (time3 > oAnimDuration) {
 			mBez = getBezierVal(
-				500,
-				time3 - 500,
+				oAnimDuration,
+				time3 - oAnimDuration,
 				this.constants.bezierP1[0],
 				this.constants.bezierP1[1],
 				this.constants.bezierP1[2],
 				this.constants.bezierP1[3]
 			);
 		}
-		if (time3 > 1000) {
+		if (time3 > (phase3 * 2) / 5) {
 			mBez = 1;
 		}
 
