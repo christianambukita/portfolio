@@ -23,8 +23,14 @@ export default function CircleAnim({ scrollElementId }) {
 	function handleMouseMove(e) {
 		circle.current.setMousePos([e.clientX, e.clientY]);
 	}
+	function handleMouseLeave() {
+		circle.current.setMousePos(null);
+	}
 	return (
-		<div className='art-container' onMouseMove={handleMouseMove}>
+		<div
+			className='art-container'
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}>
 			<div className='clipping-mask'>
 				<canvas id={CANVAS_ID} width='600' height='600'></canvas>
 			</div>

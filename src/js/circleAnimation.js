@@ -8,6 +8,7 @@ class CircleAnimation {
 		this.canvasPos = [];
 		this.mousePos = [undefined, undefined];
 		this.circleData = undefined;
+		this.circleRadius = undefined;
 		this.kernel = circleKernel;
 		this.render = undefined;
 	}
@@ -29,20 +30,22 @@ class CircleAnimation {
 	}
 
 	initCircle() {
-		const width = 1.2;
-		const margin = 100;
-		const innerNoiseWidth = 100;
-		const noiseRandomWidth = innerNoiseWidth;
-		const noiseModifier = 8;
-		const widthHalf = width / 2;
-		const padding = 2.5;
-
 		const { width: canvasWidth, height: canvasHeight } = this.canvas;
 		const center = [canvasWidth / 2, canvasHeight / 2];
-		const radius = canvasWidth / 2 - width / 2 - margin + padding;
 
-		const noiseOutterBorder = radius - widthHalf;
-		const noiseInnerBorder = radius - widthHalf - noiseRandomWidth;
+		// Margin - space between circle border and canvas border to enable canvas
+		//mouseover interaction with circle when cursor is outside of circle
+		const margin = canvasWidth / 6;
+		const innerNoiseWidth = canvasWidth / 6;
+		const noiseModifier = 8;
+		const borderWidth = 2;
+
+		// Circle outter border to ensure seamless connection with clipping mask
+		const circleOutterBorder = 3;
+		this.circleRadius = canvasWidth / 2 - margin;
+		const radius = this.circleRadius + circleOutterBorder;
+		const noiseOutterBorder = radius - borderWidth;
+		const noiseInnerBorder = noiseOutterBorder - innerNoiseWidth;
 
 		this.circleData = {
 			center,
@@ -71,17 +74,13 @@ class CircleAnimation {
 	}
 
 	getMouseCanvasPos() {
+		if (!this.mousePos) return null;
 		const x = this.mousePos[0] - Math.floor(this.canvasPos[0]);
 		const y = this.mousePos[1] - Math.floor(this.canvasPos[1]);
-		let isMouseOverCanvas = true;
-		if (x < 0 || y < 0) isMouseOverCanvas = false;
-		if (x > this.canvas.width || y > this.canvas.height)
-			isMouseOverCanvas = false;
-		if (isMouseOverCanvas) return [x, y];
-		return null;
+		return [x, y];
 	}
 
-	newPaint() {
+	renderWrap() {
 		const mouseCanvasPos = this.getMouseCanvasPos();
 		const mouseOver = mouseCanvasPos ? true : false;
 		if (mouseOver) this.render(mouseOver, mouseCanvasPos[0], mouseCanvasPos[1]);
@@ -90,9 +89,9 @@ class CircleAnimation {
 
 	initAnimation() {
 		this.init();
-		this.newPaint(this.render);
+		this.renderWrap();
 		setInterval(() => {
-			this.newPaint(this.render);
+			this.renderWrap();
 		}, 1000 / this.canvasFps);
 	}
 }
@@ -104,13 +103,16 @@ const kernel = function (mouseOver, mpx, mpy) {
 	let s = 0;
 	let mouseSpawnChance = false;
 	let mouseDistance = 0;
+
 	///Mouse distance
 	if (mouseOver) {
 		const mdx = Math.abs(pixelPos[0] - mpx);
 		const mdy = Math.abs(pixelPos[1] - mpy);
 		mouseDistance = Math.sqrt(Math.pow(mdx, 2) + Math.pow(mdy, 2));
-		const maxDistance = 20;
-		let randDistance = Math.floor(Math.random() * 40 + maxDistance);
+		const minDistance = this.constants.w / 30;
+		let randDistance = Math.floor(
+			Math.random() * minDistance * 2 + minDistance
+		);
 		if (mouseDistance < randDistance) {
 			const ratio = mouseDistance / randDistance;
 			const spawn = ratio * 1.5 < Math.random();
@@ -118,6 +120,7 @@ const kernel = function (mouseOver, mpx, mpy) {
 		}
 	}
 	/// End of Mouse distance
+
 	/// Circle position
 	let circlePos = false;
 	let circleMod = 0;
@@ -125,7 +128,7 @@ const kernel = function (mouseOver, mpx, mpy) {
 	const cdy = Math.abs(pixelPos[1] - this.constants.center[1]);
 	const circleDistance = Math.sqrt(Math.pow(cdx, 2) + Math.pow(cdy, 2));
 	let mouseAmplifier = 0;
-	let ampDistance = 150;
+	let ampDistance = this.constants.w / 4;
 	if (mouseOver) {
 		if (mouseDistance < ampDistance) {
 			let mouseDistanceRatio = (ampDistance - mouseDistance) / ampDistance;
@@ -148,6 +151,7 @@ const kernel = function (mouseOver, mpx, mpy) {
 		}
 	}
 	/// End of Circle position
+
 	if (mouseSpawnChance) s = Math.random();
 	if (circlePos) s = circleMod;
 	this.color(s, s, s, 1);

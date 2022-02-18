@@ -75,7 +75,7 @@ class IntroAnimation {
 		const bezierP3 = mapPoints(bezierPoints3, 1);
 		const bezierP4 = mapPoints(bezierPoints4, 1);
 
-		const noiseSize = [this.textSize[0] / 2, 500];
+		const noiseSize = [this.textSize[0] / 2, this.textSize[1] * 1.5];
 		this.introData = {
 			center,
 			canvasWidth,
