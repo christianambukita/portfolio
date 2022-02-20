@@ -43,6 +43,11 @@
 	display: none;
 }
 
+.i-fallback {
+	transition: opacity 0.5s;
+	opacity: 0;
+}
+
 .intro-clipping-mask > canvas {
 	transform: translate(-551px, -100px);
 }

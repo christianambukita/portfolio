@@ -3,34 +3,33 @@ import '../css/IntroAnim.css';
 import '../css/CircleAnim.css';
 import IntroAnimation from '../js/introAnimation';
 
-export default function IntroAnim({ transition, setTransition }) {
-	const CANVAS_ID = 'intro-canvas';
+//difference between font size and real font height
+const fontMarginMod = 0.76;
+const animationFps = 60;
+const fallbackTime = { delay: 2000, duration: 500 };
+const CANVAS_ID = 'intro-canvas';
+
+export default function IntroAnim({
+	transition,
+	setTransition,
+	canvasWidth,
+	maxCanvasWidth,
+}) {
 	const titleRef = useRef(null);
-	const animationFps = 60;
-	//difference between font size and real font height
-	const fontMarginMod = 0.76;
-
 	const intro = new IntroAnimation(CANVAS_ID, animationFps);
-
-	const [canvas, setCanvas] = useState({
-		width: 1,
-		height: 1,
-	});
-
-	const [start, setStart] = useState(false);
 	const [end, setEnd] = useState(false);
+	const [fallback, setFallback] = useState(false);
 
 	useEffect(() => {
-		const { width, height } = document
-			.getElementById(CANVAS_ID)
-			.getBoundingClientRect();
-
-		setCanvas({ width, height });
-		setStart(true);
-	}, []);
-
-	useEffect(() => {
-		if (start) {
+		if (canvasWidth !== maxCanvasWidth) {
+			setTimeout(() => {
+				setFallback(true);
+				setTimeout(() => {
+					setEnd(true);
+					setTransition(true);
+				}, fallbackTime.duration);
+			}, fallbackTime.delay);
+		} else {
 			const pxToNumber = (px) => Number(px.match(/\d+/)[0]);
 			const titleStyle = window.getComputedStyle(titleRef.current);
 			const textHeight = pxToNumber(titleStyle.fontSize) * fontMarginMod;
@@ -41,20 +40,20 @@ export default function IntroAnim({ transition, setTransition }) {
 			setTimeout(() => setTransition(true), phasesDuration);
 			setTimeout(() => setEnd(true), animDuration);
 		}
-	}, [start]);
+	}, []);
 
+	function getClasses() {
+		const baseClass = 'intro-container';
+		const transitionC = transition ? ' i-transition' : '';
+		const endC = end ? ' anim-end' : '';
+		const fallbackC = fallback ? ' i-fallback' : '';
+		return baseClass + transitionC + endC + fallbackC;
+	}
 	return (
-		<div
-			className={`intro-container${transition ? ' i-transition' : ''}${
-				end ? ' anim-end' : ''
-			}`}>
+		<div className={getClasses()}>
 			<h1 ref={titleRef}>CHRISTIAN AMBUKITA</h1>
-
 			<div className={`intro-clipping-mask`}>
-				<canvas
-					id={CANVAS_ID}
-					width={canvas.width}
-					height={canvas.height}></canvas>
+				<canvas id={CANVAS_ID} width={1500} height={maxCanvasWidth}></canvas>
 			</div>
 		</div>
 	);

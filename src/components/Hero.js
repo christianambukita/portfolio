@@ -33,6 +33,7 @@ export default function Hero({ scrollElementId }) {
 				setTransition={setTransition}
 				transition={transition}
 				canvasWidth={canvasWidth}
+				maxCanvasWidth={maxCanvasWidth}
 			/>
 			<div className={`transition${transition ? ' visible' : ''}`}>
 				<CircleAnim
