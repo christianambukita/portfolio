@@ -39,6 +39,7 @@ export default function Hero({ scrollElementId }) {
 				<CircleAnim
 					scrollElementId={scrollElementId}
 					canvasWidth={canvasWidth}
+					maxCanvasWidth={maxCanvasWidth}
 				/>
 			</div>
 		</header>

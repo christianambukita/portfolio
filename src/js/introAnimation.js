@@ -37,7 +37,6 @@ class IntroAnimation {
 		const { width: canvasWidth, height: canvasHeight } = this.canvas;
 		const center = [canvasWidth / 2, canvasHeight / 2];
 
-		console.log(canvasWidth, canvasHeight);
 		const circleMaxSize = 200;
 
 		const bezierMatrix = [1, 0, 0, 0, -3, 3, 0, 0, 3, -6, 3, 0, -1, 3, -3, 1];

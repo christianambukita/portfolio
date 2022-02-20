@@ -1,7 +1,7 @@
 import { GPU } from 'gpu.js';
 
 class CircleAnimation {
-	constructor(canvasId, fps, circleKernel = kernel) {
+	constructor(canvasId, fps, canvasSize, circleKernel = kernel) {
 		this.canvasId = canvasId;
 		this.canvas = undefined;
 		this.fps = fps;
@@ -11,6 +11,8 @@ class CircleAnimation {
 		this.circleRadius = undefined;
 		this.kernel = circleKernel;
 		this.render = undefined;
+		this.interval = undefined;
+		this.canvasSize = canvasSize;
 	}
 
 	setMousePos(newPos) {
@@ -22,27 +24,32 @@ class CircleAnimation {
 		this.canvasPos = [left, top];
 	}
 
-	init() {
+	getCircleRadius() {
+		return this.circleRadius;
+	}
+
+	init(canvasScale) {
 		this.canvas = document.getElementById(this.canvasId);
 		this.setCanvasPos();
-		this.initCircle();
+		this.initCircle(canvasScale);
 		this.render = this.getRender();
 	}
 
-	initCircle() {
-		const { width: canvasWidth, height: canvasHeight } = this.canvas;
-		const center = [canvasWidth / 2, canvasHeight / 2];
+	initCircle(canvasScale) {
+		const canvasWidth = this.canvasSize;
+		const canvasHeight = this.canvasSize;
+		const center = [this.canvasSize / 2, this.canvasSize / 2];
 
 		// Margin - space between circle border and canvas border to enable canvas
 		//mouseover interaction with circle when cursor is outside of circle
-		const margin = canvasWidth / 6;
-		const innerNoiseWidth = canvasWidth / 6;
+		const margin = canvasScale / 6;
+		const innerNoiseWidth = canvasScale / 6;
 		const noiseModifier = 8;
 		const borderWidth = 2;
 
 		// Circle outter border to ensure seamless connection with clipping mask
 		const circleOutterBorder = 3;
-		this.circleRadius = canvasWidth / 2 - margin;
+		this.circleRadius = canvasScale / 2 - margin;
 		const radius = this.circleRadius + circleOutterBorder;
 		const noiseOutterBorder = radius - borderWidth;
 		const noiseInnerBorder = noiseOutterBorder - innerNoiseWidth;
@@ -54,6 +61,7 @@ class CircleAnimation {
 			noiseModifier,
 			w: canvasWidth,
 			h: canvasHeight,
+			scale: canvasScale,
 		};
 	}
 
@@ -87,10 +95,10 @@ class CircleAnimation {
 		else this.render(mouseOver, 0, 0);
 	}
 
-	initAnimation() {
-		this.init();
+	startAnimation() {
+		if (this.interval) clearInterval(this.interval);
 		this.renderWrap();
-		setInterval(() => {
+		this.interval = setInterval(() => {
 			this.renderWrap();
 		}, 1000 / this.canvasFps);
 	}
@@ -109,7 +117,7 @@ const kernel = function (mouseOver, mpx, mpy) {
 		const mdx = Math.abs(pixelPos[0] - mpx);
 		const mdy = Math.abs(pixelPos[1] - mpy);
 		mouseDistance = Math.sqrt(Math.pow(mdx, 2) + Math.pow(mdy, 2));
-		const minDistance = this.constants.w / 30;
+		const minDistance = this.constants.scale / 30;
 		let randDistance = Math.floor(
 			Math.random() * minDistance * 2 + minDistance
 		);
@@ -128,7 +136,7 @@ const kernel = function (mouseOver, mpx, mpy) {
 	const cdy = Math.abs(pixelPos[1] - this.constants.center[1]);
 	const circleDistance = Math.sqrt(Math.pow(cdx, 2) + Math.pow(cdy, 2));
 	let mouseAmplifier = 0;
-	let ampDistance = this.constants.w / 4;
+	let ampDistance = this.constants.scale / 4;
 	if (mouseOver) {
 		if (mouseDistance < ampDistance) {
 			let mouseDistanceRatio = (ampDistance - mouseDistance) / ampDistance;

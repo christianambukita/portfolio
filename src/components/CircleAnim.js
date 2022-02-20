@@ -1,14 +1,27 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../css/CircleAnim.css';
 import CircleAnimation from '../js/circleAnimation';
 
-export default function CircleAnim({ scrollElementId }) {
+export default function CircleAnim({
+	scrollElementId,
+	canvasWidth,
+	maxCanvasWidth,
+}) {
 	const CANVAS_ID = 'circle-canvas';
 	const animationFps = 60;
-	const circle = useRef(new CircleAnimation(CANVAS_ID, animationFps));
+	const circle = useRef(
+		new CircleAnimation(CANVAS_ID, animationFps, maxCanvasWidth)
+	);
+	const [circleRadius, setCircleRadius] = useState(200);
+
+	function startAnimation() {
+		circle.current.init(canvasWidth);
+		circle.current.startAnimation();
+		setCircleRadius(circle.current.getCircleRadius());
+	}
 
 	useEffect(() => {
-		circle.current.initAnimation();
+		startAnimation();
 		const scrollHandle = document.getElementById(scrollElementId);
 		const handleCanvasPos = () => circle.current.setCanvasPos();
 
@@ -20,19 +33,44 @@ export default function CircleAnim({ scrollElementId }) {
 		};
 	}, []);
 
+	useEffect(() => {
+		startAnimation();
+	}, [canvasWidth]);
+
 	function handleMouseMove(e) {
 		circle.current.setMousePos([e.clientX, e.clientY]);
 	}
 	function handleMouseLeave() {
 		circle.current.setMousePos(null);
 	}
+
+	function getSize(size) {
+		return {
+			width: `${size}px`,
+			height: `${size}px`,
+		};
+	}
+
+	function getCanvasStyle() {
+		const translation = Math.floor(maxCanvasWidth / 2 - circleRadius);
+		const style = {
+			transform: `translate(-${translation + 1}px, -${translation}px)`,
+		};
+		return style;
+	}
+
 	return (
 		<div
-			className='art-container'
+			className='anim-container'
 			onMouseMove={handleMouseMove}
-			onMouseLeave={handleMouseLeave}>
-			<div className='clipping-mask'>
-				<canvas id={CANVAS_ID} width='600' height='600'></canvas>
+			onMouseLeave={handleMouseLeave}
+			style={getSize(canvasWidth)}>
+			<div className='clipping-mask' style={getSize(circleRadius * 2)}>
+				<canvas
+					id={CANVAS_ID}
+					width={maxCanvasWidth}
+					height={maxCanvasWidth}
+					style={getCanvasStyle()}></canvas>
 			</div>
 		</div>
 	);

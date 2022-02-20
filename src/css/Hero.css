@@ -3,9 +3,9 @@ header {
 	top: 0;
 	min-height: 100vh;
 	width: 100%;
-
 	position: relative;
 	padding-top: var(--navbar-height);
+	overflow-x: hidden;
 }
 
 .transition {

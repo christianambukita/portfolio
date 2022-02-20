@@ -1,21 +1,13 @@
-.art-container {
+.anim-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 600px;
-	height: 600px;
 }
 
 /* circle animation */
 .clipping-mask {
 	box-sizing: border-box;
-	width: 400px;
-	height: 400px;
 	border-radius: 50%;
 	overflow: hidden;
 	cursor: none;
-}
-
-.clipping-mask > canvas {
-	transform: translate(-101px, -100px);
 }
