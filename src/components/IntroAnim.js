@@ -51,7 +51,10 @@ export default function IntroAnim({
 	}
 	return (
 		<div className={getClasses()}>
-			<h1 ref={titleRef}>CHRISTIAN AMBUKITA</h1>
+			<h1 ref={titleRef} id='title'>
+				<span>CHRISTIAN</span>
+				<span>AMBUKITA</span>
+			</h1>
 			<div className={`intro-clipping-mask`}>
 				<canvas id={CANVAS_ID} width={1500} height={maxCanvasWidth}></canvas>
 			</div>
