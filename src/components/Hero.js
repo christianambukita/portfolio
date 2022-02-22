@@ -10,7 +10,7 @@ const getCanvasWidth = (value) => {
 	return flooredValue < maxCanvasWidth ? flooredValue : maxCanvasWidth;
 };
 
-export default function Hero({ scrollElementId, windowWidth }) {
+export default function Hero({ windowWidth }) {
 	const [transition, setTransition] = useState(false);
 	const [canvasWidth, setcanvasWidth] = useState(
 		getCanvasWidth(window.innerWidth)
@@ -30,11 +30,7 @@ export default function Hero({ scrollElementId, windowWidth }) {
 				maxCanvasWidth={maxCanvasWidth}
 			/>
 			<div className={`transition${transition ? ' visible' : ''}`}>
-				<CircleAnim
-					scrollElementId={scrollElementId}
-					canvasWidth={canvasWidth}
-					maxCanvasWidth={maxCanvasWidth}
-				/>
+				<CircleAnim canvasWidth={canvasWidth} maxCanvasWidth={maxCanvasWidth} />
 			</div>
 		</header>
 	);

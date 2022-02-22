@@ -23,13 +23,10 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Montserrat', sans-serif;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 main {
-	top: 0;
-	padding: 0;
-	height: 100vh;
 	width: 100%;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -67,20 +64,21 @@ h2 {
 }
 
 /* scrollbar */
-.scrollbar {
-	overflow-y: scroll;
+* {
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
 	scrollbar-color: var(--scrollbar-color-t) var(--scrollbar-color-b);
-	scroll-snap-type: y proximity;
 }
 
-.scrollbar::-webkit-scrollbar {
+::-webkit-scrollbar-track {
+	margin-block: 5px;
+}
+::-webkit-scrollbar {
 	width: var(--scrollbar-width);
 	background-color: var(--scrollbar-color-b);
 }
 
-.scrollbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	border-radius: 4px;
 	background: var(--scrollbar-color-t);
 }

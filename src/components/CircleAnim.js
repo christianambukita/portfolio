@@ -2,11 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../css/CircleAnim.css';
 import CircleAnimation from '../js/circleAnimation';
 
-export default function CircleAnim({
-	scrollElementId,
-	canvasWidth,
-	maxCanvasWidth,
-}) {
+export default function CircleAnim({ canvasWidth, maxCanvasWidth }) {
 	const CANVAS_ID = 'circle-canvas';
 	const animationFps = 60;
 	const circle = useRef(
@@ -22,14 +18,13 @@ export default function CircleAnim({
 
 	useEffect(() => {
 		startAnimation();
-		const scrollHandle = document.getElementById(scrollElementId);
 		const handleCanvasPos = () => circle.current.setCanvasPos();
 
 		window.addEventListener('resize', handleCanvasPos);
-		scrollHandle.addEventListener('scroll', handleCanvasPos);
+		window.addEventListener('scroll', handleCanvasPos);
 		return () => {
 			window.removeEventListener('onresize', handleCanvasPos);
-			scrollHandle.removeEventListener('onscroll', handleCanvasPos);
+			window.removeEventListener('onscroll', handleCanvasPos);
 		};
 	}, []);
 

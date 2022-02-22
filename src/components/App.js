@@ -18,8 +18,8 @@ function App() {
 	return (
 		<div className='app'>
 			<Nav windowWidth={windowWidth} />
-			<main id='main' className='scrollbar'>
-				<Hero scrollElementId='main' windowWidth={windowWidth} />
+			<main id='main'>
+				<Hero windowWidth={windowWidth} />
 				<MyWork />
 				<About />
 			</main>
