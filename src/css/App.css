@@ -8,7 +8,7 @@
 	--section-color: hsl(0, 0%, 10%);
 	--element-color: hsla(0, 0%, 0%, 0.5);
 	--element-color-f: hsla(0, 0%, 0%, 0.7);
-	--navbar-color: hsla(0, 0%, 10%, 0.95);
+	--navbar-color: hsla(0, 0%, 0%, 0.85);
 	--navbar-height: 60px;
 	--section-padding: 20px;
 }

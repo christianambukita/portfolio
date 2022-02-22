@@ -1,21 +1,92 @@
 nav {
-	height: var(--navbar-height);
-	width: calc(100% - var(--scrollbar-width));
 	position: absolute;
+	width: calc(100% - var(--scrollbar-width));
+	transition: background 0.3s ease-in-out;
+}
+
+.nav-wide {
+	box-sizing: content-box;
+	height: var(--navbar-height);
+
 	top: 0;
 	left: 0;
 	justify-content: flex-end !important;
 	z-index: 10;
 }
 
-nav:hover {
+.nav-wide:hover {
 	background: var(--navbar-color);
 }
 
 nav ul {
 	list-style: none;
+	margin: 0;
 }
-nav li {
-	width: 80px;
-	text-align: center;
+
+.nav-wide ul {
+	height: 100%;
+}
+.nav-wide li {
+	display: flex;
+	box-sizing: content-box;
+	height: 100%;
+	width: 100px;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+.nav-wide li:hover ::after {
+	left: 0;
+	top: 0;
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-bottom: 1px solid white;
+}
+
+.nav-wide img {
+	display: none;
+}
+
+.nav-small ul {
+	top: 0;
+	right: -100%;
+	margin: 0;
+	position: absolute;
+	background: black;
+	height: 100vh;
+	width: 40vw;
+	min-width: 220px;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	z-index: 2;
+	padding-top: 100px;
+	transition: all 0.3s ease-in-out;
+	border-left: 1px solid white;
+}
+
+.active {
+	height: 100vh;
+	background: var(--navbar-color);
+	z-index: 2;
+}
+.active ul {
+	right: 0;
+}
+
+.nav-small li {
+	font-size: 2em;
+	margin-block: 0.5em;
+}
+
+.nav-small img {
+	z-index: 3;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 40px;
+	width: 40px;
+	margin: 10px;
 }
