@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import '../css/Nav.css';
 import hamburger from '../img/icons/hamburger_w15.svg';
 
@@ -28,13 +30,16 @@ export default function Nav({ windowWidth }) {
 			/>
 			<ul className={`flex-container`}>
 				<li onClick={() => setActive(false)}>
-					<a href='#header'>Home</a>
+					<HashLink to='/#header'>Home</HashLink>
 				</li>
 				<li onClick={() => setActive(false)}>
-					<a href='#my-work'>My Work</a>
+					<HashLink to='/#my-work'>My Work</HashLink>
 				</li>
 				<li onClick={() => setActive(false)}>
-					<a href='#about'>About</a>
+					<HashLink to='/#about'>About</HashLink>
+				</li>
+				<li onClick={() => setActive(false)}>
+					<Link to='/climbing-app'>Climbing App</Link>
 				</li>
 			</ul>
 		</nav>
