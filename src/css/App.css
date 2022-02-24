@@ -52,17 +52,6 @@ h2 {
 	margin-bottom: 2em;
 }
 
-@media (min-width: 800px) {
-	section,
-	header {
-		scroll-snap-align: center;
-	}
-
-	h2 {
-		margin-bottom: 3em;
-	}
-}
-
 /* scrollbar */
 * {
 	scroll-behavior: smooth;

@@ -1,0 +1,38 @@
+#about {
+	display: flex;
+	justify-content: center;
+}
+
+#about .section-container {
+	max-width: 600px;
+}
+
+#about article {
+	text-align: justify;
+}
+
+@media (min-width: 600px) {
+	#about article {
+		font-size: 1.2em;
+	}
+}
+
+@media (min-width: 800px) {
+	#about .section-container {
+		max-width: 800px;
+	}
+
+	#about article {
+		font-size: 1.5em;
+	}
+}
+
+@media (min-width: 1200px) {
+	#about .section-container {
+		max-width: 1000px;
+	}
+
+	#about article {
+		font-size: 1.5em;
+	}
+}
