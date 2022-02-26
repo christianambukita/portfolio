@@ -1,0 +1,96 @@
+#climbing-app {
+	margin: 0;
+	min-height: 100vh;
+	width: 100%;
+	padding: var(--section-padding);
+	position: relative;
+	padding-top: var(--navbar-height);
+	text-align: justify;
+}
+
+.content-container {
+	width: 100%;
+	padding: 20px;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: column;
+}
+
+.img-container {
+	aspect-ratio: 1;
+	padding: 0;
+}
+.c-img {
+	max-height: 70vh;
+	max-width: 100%;
+	box-shadow: 0px 0px 15px white;
+	border-radius: 10px;
+}
+
+#climbing-app .p-side-container {
+	max-height: max-content;
+	justify-content: flex-start;
+	padding-top: 2em;
+	max-width: 600px;
+}
+
+#climbing-app p {
+	font-size: 1em;
+	text-align: justify;
+}
+#climbing-app h1 {
+	font-size: 3em;
+	font-weight: 300;
+	margin-block: 60px 1em;
+}
+#climbing-app .project {
+	font-size: 1em !important;
+	margin-bottom: 6em;
+}
+#climbing-app h2 {
+	font-size: 2.5em;
+	font-weight: 400;
+	margin-block: 0 1em;
+}
+
+.app-description {
+	max-width: 600px;
+	margin-bottom: 10em;
+	margin-inline: 1em;
+}
+
+@media (min-width: 600px) {
+	#climbing-app {
+		font-size: 1.1em;
+	}
+
+	.app-description {
+		margin-inline: 2em;
+	}
+	#climbing-app h1 {
+		font-size: 3em;
+		margin-block-start: 120px;
+	}
+}
+@media (min-width: 800px) {
+	#climbing-app {
+		font-size: 1.2em;
+	}
+	.app-description {
+		max-width: 900px;
+	}
+	.project {
+		min-height: 80vh;
+	}
+}
+
+@media (min-width: 1200px) {
+	#climbing-app .p-side-container {
+		width: 80%;
+		padding-right: 3em;
+	}
+
+	#climbing-app {
+		font-size: 1.4em;
+	}
+}

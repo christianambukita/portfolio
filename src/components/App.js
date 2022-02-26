@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/App.css';
 import Nav from './Nav';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ClimbingApp from './ClimbingApp';
+import ClimbingApp from './ClimbingApp/ClimbingApp';
 import MainPage from './MainPage';
 
 function App() {
@@ -21,8 +21,9 @@ function App() {
 			<BrowserRouter>
 				<Nav windowWidth={windowWidth} />
 				<Routes>
-					<Route path='/' element={<MainPage windowWidth={windowWidth} />} />
-					<Route path='/climbing-app' element={<ClimbingApp />} />
+					{/* <Route path='/' element={<MainPage windowWidth={windowWidth} />} /> */}
+					{/* <Route path='/climbing-app' element={<ClimbingApp />} /> */}
+					<Route path='/' element={<ClimbingApp />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

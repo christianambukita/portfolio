@@ -2,6 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './components/App';
-import ClimbingApp from './components/ClimbingApp';
+import ClimbingApp from './components/ClimbingApp/ClimbingApp';
 
 ReactDOM.render(<App />, document.getElementById('root'));
