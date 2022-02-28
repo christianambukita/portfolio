@@ -19,6 +19,17 @@ module.exports = {
 				use: ['style-loader', 'css-loader'],
 			},
 			{
+				test: /\.(mov|mp4)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name].[ext]',
+						},
+					},
+				],
+			},
+			{
 				test: /\.(jpe?g|gif|png|svg)$/i,
 				use: [
 					{

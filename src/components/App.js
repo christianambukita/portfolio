@@ -23,7 +23,7 @@ function App() {
 				<Routes>
 					{/* <Route path='/' element={<MainPage windowWidth={windowWidth} />} /> */}
 					{/* <Route path='/climbing-app' element={<ClimbingApp />} /> */}
-					<Route path='/' element={<ClimbingApp />} />
+					<Route path='/' element={<ClimbingApp windowWidth={windowWidth} />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

@@ -1,13 +1,15 @@
 import React from 'react';
-import addProblemImg from '../../img/climbingApp/AddProblem.png';
-import activeProblemImg from '../../img/climbingApp/ActiveProblem.png';
-import loadProblemImg from '../../img/climbingApp/LoadProblem.png';
-import loadProblem2Img from '../../img/climbingApp/LoadProblem2.png';
+import addProblemImg from '../../img/climbingApp/addProblem.jpg';
+import activeProblemImg from '../../img/climbingApp/activeProblem.png';
+import loadProblemImg from '../../img/climbingApp/loadProblem.jpg';
+import addProblemVid from '../../img/climbingApp/video1.mp4';
+import loadProblemVid from '../../img/climbingApp/video2.mp4';
 
 const content = [
 	{
 		title: 'Add problem',
 		imgSrc: addProblemImg,
+		vidSrc: addProblemVid,
 		description: (
 			<p>
 				This view allows you to create a new problem. You are able to select
@@ -22,6 +24,7 @@ const content = [
 	{
 		title: 'Load problem',
 		imgSrc: loadProblemImg,
+		vidSrc: loadProblemVid,
 		description: (
 			<p>
 				In this view you have acces to all saved problems. You can filter

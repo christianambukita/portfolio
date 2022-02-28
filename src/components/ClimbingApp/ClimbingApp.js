@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import content from './content';
 import '../../css/MyWork.css';
 import '../../css/ClimbingApp.css';
 
-export default function ClimbingApp() {
+export default function ClimbingApp({ windowWidth }) {
+	const vidRefs = {};
+	const vidIndexes = content
+		.map((elem, i) => (elem.vidSrc ? i : null))
+		.filter((elem) => elem != null);
+	vidIndexes.forEach((index) => (vidRefs[index] = useRef(null)));
+
+	function getVidInfo() {
+		if (windowWidth < 600) return 'tap to preview';
+		return 'mouse over to preview';
+	}
+
+	function handleMouseOver(ref, play) {
+		const video = ref.current;
+		if (play) {
+			video.classList.add('video-play');
+			video.play();
+			video.onended = () => handleMouseOver(ref, play);
+
+			ref;
+		} else {
+			video.classList.remove('video-play');
+			video.load();
+		}
+	}
+
 	return (
 		<main id='climbing-app'>
 			<div className='content-container flex-container'>
@@ -30,12 +55,25 @@ export default function ClimbingApp() {
 						<div
 							className={'project' + `${i % 2 ? ' r-order' : ''}`}
 							key={`project-${i}`}>
-							<div className='img-container flex-container'>
-								<img
-									className='c-img'
-									src={option.imgSrc}
-									alt='project preview'
-								/>
+							<div className='img-position flex-container'>
+								<div className='img-container'>
+									<img
+										className='c-img'
+										src={option.imgSrc}
+										alt='project preview'
+									/>
+									{option.vidSrc && (
+										<video
+											ref={vidRefs[i]}
+											className='c-video'
+											onMouseEnter={() => handleMouseOver(vidRefs[i], true)}
+											onMouseLeave={() => handleMouseOver(vidRefs[i], false)}
+											muted='muted'>
+											<source src={option.vidSrc} type='video/mp4' />
+										</video>
+									)}
+								</div>
+								{option.vidSrc && <p className='vid-info'>{getVidInfo()}</p>}
 							</div>
 							<div className='p-side-container'>
 								<div className='p-inner-container'>
