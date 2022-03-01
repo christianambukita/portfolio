@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: ['babel-polyfill', './src/index.js'],
@@ -54,6 +55,14 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: path.resolve('public/index.html'),
+		}),
+		new CopyPlugin({
+			patterns: [
+				{
+					from: path.resolve(__dirname, 'public/_redirects'),
+					to: path.resolve(__dirname, 'dist/'),
+				},
+			],
 		}),
 	],
 };
