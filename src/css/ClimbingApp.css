@@ -63,10 +63,6 @@
 }
 
 @media (min-width: 600px) {
-	#climbing-app {
-		font-size: 1.1em;
-	}
-
 	.app-description {
 		margin-inline: 2em;
 	}
@@ -76,9 +72,6 @@
 	}
 }
 @media (min-width: 800px) {
-	#climbing-app {
-		font-size: 1.2em;
-	}
 	.app-description {
 		max-width: 900px;
 	}
@@ -94,10 +87,6 @@
 	#climbing-app .p-side-container {
 		width: 80%;
 		padding-right: 3em;
-	}
-
-	#climbing-app {
-		font-size: 1.4em;
 	}
 }
 

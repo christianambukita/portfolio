@@ -1,10 +1,30 @@
 @font-face {
 	font-family: 'Montserrat';
-	src: url('../fonts/Montserrat/static/Montserrat-ExtraLight.ttf'),
-		url('../fonts/Montserrat/static/Montserrat-Light.ttf'),
-		url('../fonts/Montserrat/static/Montserrat-Regular.ttf'),
-		url('../fonts/Montserrat/static/Montserrat-Medium.ttf'),
-		url('../fonts/Montserrat/static/Montserrat-Bold.ttf');
+	src: url('../fonts/Montserrat/static/Montserrat-ExtraLight.ttf')
+		format('truetype');
+	font-weight: 200;
+}
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../fonts/Montserrat/static/Montserrat-Light.ttf') format('truetype');
+	font-weight: 300;
+}
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../fonts/Montserrat/static/Montserrat-Regular.ttf')
+		format('truetype');
+	font-weight: 400;
+}
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../fonts/Montserrat/static/Montserrat-Medium.ttf')
+		format('truetype');
+	font-weight: 500;
+}
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../fonts/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+	font-weight: 700;
 }
 
 :root {
@@ -30,6 +50,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Montserrat', sans-serif;
+	font-weight: 400;
 	overflow-x: hidden;
 }
 
@@ -55,8 +76,9 @@ a:visited {
 }
 
 h2 {
-	font-size: 3em;
+	font-size: 4em;
 	margin-bottom: 2em;
+	font-weight: 500;
 }
 
 /* scrollbar */
@@ -81,4 +103,22 @@ html {
 ::-webkit-scrollbar-thumb {
 	border-radius: 4px;
 	background: var(--scrollbar-color-t);
+}
+
+/* font size media querry */
+@media (min-width: 600px) {
+	.app {
+		font-size: 1.1em;
+	}
+}
+
+@media (min-width: 800px) {
+	.app {
+		font-size: 1.2em;
+	}
+}
+@media (min-width: 1200px) {
+	.app {
+		font-size: 1.4em;
+	}
 }

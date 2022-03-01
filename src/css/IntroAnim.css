@@ -6,6 +6,7 @@
 	width: 100vw;
 	height: 600px;
 	overflow: hidden;
+	font-size: 14px !important;
 }
 
 .anim-end {

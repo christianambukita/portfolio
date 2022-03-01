@@ -9,30 +9,17 @@
 
 #about article {
 	text-align: justify;
-}
-
-@media (min-width: 600px) {
-	#about article {
-		font-size: 1.2em;
-	}
+	font-size: 1.1em;
 }
 
 @media (min-width: 800px) {
 	#about .section-container {
 		max-width: 800px;
 	}
-
-	#about article {
-		font-size: 1.5em;
-	}
 }
 
 @media (min-width: 1200px) {
 	#about .section-container {
 		max-width: 1000px;
-	}
-
-	#about article {
-		font-size: 1.5em;
 	}
 }
