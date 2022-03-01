@@ -22,8 +22,13 @@ export default function Nav({ windowWidth }) {
 		return baseClass + wideClass + activeClass;
 	}
 
+	function handleClick(e) {
+		const isTarget = e.target === e.currentTarget;
+		if (active && isTarget) setActive(false);
+	}
+
 	return (
-		<nav className={getNavStyle()}>
+		<nav className={getNavStyle()} onClick={handleClick}>
 			<img
 				src={hamburger}
 				alt='menu button'
