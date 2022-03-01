@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import '../css/Nav.css';
 import hamburger from '../img/icons/hamburger_w15.svg';
@@ -10,8 +9,10 @@ export default function Nav({ windowWidth }) {
 	const [wide, setWide] = useState(false);
 
 	useEffect(() => {
-		if (windowWidth > wideMinWidth) setWide(true);
-		else setWide(false);
+		if (windowWidth > wideMinWidth) {
+			setWide(true);
+			setActive(false);
+		} else setWide(false);
 	}, [windowWidth]);
 
 	function getNavStyle() {
