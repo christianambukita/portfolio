@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&display=swap');
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../fonts/Montserrat/static/Montserrat-ExtraLight.ttf'),
+		url('../fonts/Montserrat/static/Montserrat-Light.ttf'),
+		url('../fonts/Montserrat/static/Montserrat-Regular.ttf'),
+		url('../fonts/Montserrat/static/Montserrat-Medium.ttf'),
+		url('../fonts/Montserrat/static/Montserrat-Bold.ttf');
+}
 
 :root {
 	/* --main-color:  */

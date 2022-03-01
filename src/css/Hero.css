@@ -5,7 +5,7 @@ header {
 	width: 100%;
 	position: relative;
 	padding-top: var(--navbar-height);
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 .transition {
