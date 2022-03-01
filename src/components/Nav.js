@@ -38,9 +38,6 @@ export default function Nav({ windowWidth }) {
 				<li onClick={() => setActive(false)}>
 					<HashLink to='/#about'>About</HashLink>
 				</li>
-				<li onClick={() => setActive(false)}>
-					<Link to='/climbing-app'>Climbing App</Link>
-				</li>
 			</ul>
 		</nav>
 	);

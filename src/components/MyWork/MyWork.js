@@ -2,6 +2,8 @@ import React from 'react';
 import '../../css/MyWork.css';
 import projects from './projects';
 import animateButton from '../../js/buttonAnimation';
+import climbImg from '../../img/sqr/climb.png';
+import { Link } from 'react-router-dom';
 
 export default function MyWork() {
 	return (
@@ -9,6 +11,26 @@ export default function MyWork() {
 			<article className='section-container flex-container'>
 				<h2>My work</h2>
 				<div className='my-work-subsection'>
+					<div className='project r-order'>
+						<img src={climbImg} alt='project preview' />
+						<div className='p-side-container'>
+							<div className='p-inner-container'>
+								<h3>Climbing App</h3>
+								<div className='links-container'>
+									<Link
+										to='/climbing-app'
+										onMouseEnter={() => animateButton('canvas-climb', true)}
+										onMouseLeave={() => animateButton('canvas-climb', false)}
+										onClick={() =>
+											document.documentElement.classList.add('auto-scroll')
+										}>
+										<canvas className='btn-canvas' id='canvas-climb'></canvas>
+										DETAILS
+									</Link>
+								</div>
+							</div>
+						</div>
+					</div>
 					{projects.map((project, i) => (
 						<div
 							className={'project' + `${i % 2 ? ' r-order' : ''}`}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import content from './content';
 import '../../css/MyWork.css';
 import '../../css/ClimbingApp.css';
@@ -28,6 +28,11 @@ export default function ClimbingApp({ windowWidth }) {
 			video.load();
 		}
 	}
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		document.documentElement.classList.remove('auto-scroll');
+	}, []);
 
 	return (
 		<main id='climbing-app'>

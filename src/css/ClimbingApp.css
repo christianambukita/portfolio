@@ -82,7 +82,7 @@
 	.app-description {
 		max-width: 900px;
 	}
-	.project {
+	#climbing-app .project {
 		min-height: 80vh;
 	}
 	.img-container {

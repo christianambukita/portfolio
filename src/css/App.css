@@ -53,10 +53,14 @@ h2 {
 }
 
 /* scrollbar */
-* {
+html {
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
 	scrollbar-color: var(--scrollbar-color-t) var(--scrollbar-color-b);
+}
+
+.auto-scroll {
+	scroll-behavior: auto;
 }
 
 ::-webkit-scrollbar-track {
