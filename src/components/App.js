@@ -28,6 +28,7 @@ function App() {
 					/>
 				</Routes>
 			</BrowserRouter>
+			<footer>&copy; 2022 Christian Ambukita</footer>
 		</div>
 	);
 }

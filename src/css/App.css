@@ -105,6 +105,13 @@ html {
 	background: var(--scrollbar-color-t);
 }
 
+footer {
+	text-align: center;
+	opacity: 0.5;
+	font-size: 0.8em;
+	font-weight: 200;
+}
+
 /* font size media querry */
 @media (min-width: 600px) {
 	.app {
