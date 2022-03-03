@@ -106,7 +106,7 @@ class IntroAnimation {
 			.setFunctions([this.getBezierVal]);
 	}
 
-	initAnimation() {
+	initAnimation(transitionCallback, endCallback) {
 		const phase0 = 1500;
 		const phase1 = 1000;
 		const phase2 = 400;
@@ -121,9 +121,12 @@ class IntroAnimation {
 		//this.render(time);
 		const interval = setInterval(() => {
 			this.render(time, phase0, phase1, phase2, phase3);
-			// this.render(time, 0, 0, 0, 0);
 			time += timeStep;
-			if (time > animDuration) clearInterval(interval);
+			if (time > phasesDuration) transitionCallback();
+			if (time > animDuration) {
+				endCallback();
+				clearInterval(interval);
+			}
 		}, timeStep);
 		return { phasesDuration, animDuration };
 	}

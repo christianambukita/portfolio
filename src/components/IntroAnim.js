@@ -36,9 +36,9 @@ export default function IntroAnim({
 			const textWidth = pxToNumber(titleStyle.width);
 			intro.setTextSize(textWidth, textHeight);
 
-			const { phasesDuration, animDuration } = intro.initAnimation();
-			setTimeout(() => setTransition(true), phasesDuration);
-			setTimeout(() => setEnd(true), animDuration);
+			const transitionCallback = () => setTransition(true);
+			const endCallback = () => setEnd(true);
+			intro.initAnimation(transitionCallback, endCallback);
 		}
 	}, []);
 
