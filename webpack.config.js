@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const FontPreloadPlugin = require('webpack-font-preload-plugin');
 
 module.exports = {
 	entry: ['babel-polyfill', './src/index.js'],
@@ -55,6 +56,7 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: path.resolve('public/index.html'),
+			favicon: './public/favicon.png',
 		}),
 		new CopyPlugin({
 			patterns: [
@@ -64,5 +66,6 @@ module.exports = {
 				},
 			],
 		}),
+		new FontPreloadPlugin(),
 	],
 };
