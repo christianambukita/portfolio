@@ -10,4 +10,5 @@
 	border-radius: 50%;
 	overflow: hidden;
 	cursor: none;
+	touch-action: none;
 }

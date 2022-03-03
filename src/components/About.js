@@ -23,7 +23,7 @@ export default function About() {
 				</article>
 			</div>
 			<a
-				class='github-icon-link'
+				className='github-icon-link'
 				href='https://github.com/christianambukita?tab=repositories'>
 				<img src={gitHubIcon} alt='github-logo' />
 			</a>

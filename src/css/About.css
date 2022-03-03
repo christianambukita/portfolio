@@ -4,7 +4,7 @@
 	justify-content: space-between;
 	align-items: center;
 	flex-direction: column;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 #about .section-container {
@@ -33,9 +33,27 @@
 
 .github-icon-link {
 	margin-block: 3em 2em;
-}
-.github-icon-link img {
 	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+	border: 1px solid black;
+	transition: all 0.2s ease-in-out;
+	display: flex;
+	justify-content: center;
+}
+
+.github-icon-link:hover {
+	border: 1px solid white;
+	background: white;
+}
+
+.github-icon-link img {
+	width: 100%;
+	transition: all 0.2s ease-in-out;
+}
+.github-icon-link:hover img {
+	filter: invert(1);
+	width: 100%;
 }
 
 @media (min-width: 800px) {

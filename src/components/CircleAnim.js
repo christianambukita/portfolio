@@ -58,7 +58,9 @@ export default function CircleAnim({ canvasWidth, maxCanvasWidth }) {
 		<div
 			className='anim-container'
 			onMouseMove={handleMouseMove}
+			onPointerMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
+			onPointerLeave={handleMouseLeave}
 			style={getSize(canvasWidth)}>
 			<div className='clipping-mask' style={getSize(circleRadius * 2)}>
 				<canvas
