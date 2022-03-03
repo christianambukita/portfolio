@@ -27,30 +27,30 @@ const projectsList = [
 		githubURL: 'https://github.com/christianambukita/drum-pad-simulator',
 		liveURL: 'https://retro-drum-pad.netlify.app/',
 	},
-	{
-		name: 'Kanye West quotes',
-		imgSrc: kanyeImg,
-		githubURL:
-			'https://github.com/christianambukita/kanye-west-quote-generator',
-		liveURL: 'https://kanye-west-quote-generator.netlify.app/',
-	},
-	{
-		name: 'Formula calculator',
-		imgSrc: calculatorImg,
-		githubURL: 'https://github.com/christianambukita/formula-calculator',
-		liveURL: 'https://learning-project-02.netlify.app/',
-	},
-	{
-		name: 'Interval timer',
-		imgSrc: timerImg,
-		githubURL: 'https://github.com/christianambukita/interval-timer',
-		liveURL: 'https://learning-project-01.netlify.app/',
-	},
-	{
-		name: 'Markdown phraser',
-		imgSrc: markdownImg,
-		githubURL: 'https://github.com/christianambukita/markdown-previewer',
-		liveURL: 'https://learning-project-03.netlify.app/',
-	},
+	// {
+	// 	name: 'Kanye West quotes',
+	// 	imgSrc: kanyeImg,
+	// 	githubURL:
+	// 		'https://github.com/christianambukita/kanye-west-quote-generator',
+	// 	liveURL: 'https://kanye-west-quote-generator.netlify.app/',
+	// },
+	// {
+	// 	name: 'Formula calculator',
+	// 	imgSrc: calculatorImg,
+	// 	githubURL: 'https://github.com/christianambukita/formula-calculator',
+	// 	liveURL: 'https://learning-project-02.netlify.app/',
+	// },
+	// {
+	// 	name: 'Interval timer',
+	// 	imgSrc: timerImg,
+	// 	githubURL: 'https://github.com/christianambukita/interval-timer',
+	// 	liveURL: 'https://learning-project-01.netlify.app/',
+	// },
+	// {
+	// 	name: 'Markdown phraser',
+	// 	imgSrc: markdownImg,
+	// 	githubURL: 'https://github.com/christianambukita/markdown-previewer',
+	// 	liveURL: 'https://learning-project-03.netlify.app/',
+	// },
 ];
 export default projectsList;

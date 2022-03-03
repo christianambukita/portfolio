@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/About.css';
+import gitHubIcon from '../img/icons/GitHub-Mark-Light-64px.png';
 
 export default function About() {
 	return (
@@ -14,9 +15,18 @@ export default function About() {
 					graduation I started to learn HTML, CSS and JavaScript as I decided to
 					become a front-end web developer. My favorite and mainly used
 					framework is React. This website showcases some of projects I did
-					during my learning process.
+					during my learning process. To see more of my projects visit my{' '}
+					<a href='https://github.com/christianambukita?tab=repositories'>
+						github
+					</a>
+					.
 				</article>
 			</div>
+			<a
+				class='github-icon-link'
+				href='https://github.com/christianambukita?tab=repositories'>
+				<img src={gitHubIcon} alt='github-logo' />
+			</a>
 		</section>
 	);
 }
