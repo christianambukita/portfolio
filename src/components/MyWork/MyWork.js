@@ -5,6 +5,8 @@ import animateButton from '../../js/buttonAnimation';
 import climbImg from '../../img/sqr/climb.png';
 import { Link } from 'react-router-dom';
 
+const handleClick = () => document.documentElement.classList.add('auto-scroll');
+
 export default function MyWork() {
 	return (
 		<section id='my-work' className='flex-container'>
@@ -12,18 +14,20 @@ export default function MyWork() {
 				<h2>My work</h2>
 				<div className='my-work-subsection'>
 					<div className='project r-order'>
-						<img src={climbImg} alt='project preview' />
+						<Link to='/climbing-app' onClick={handleClick}>
+							<img src={climbImg} alt='project preview' />
+						</Link>
 						<div className='p-side-container'>
 							<div className='p-inner-container'>
-								<h3>Climbing App</h3>
+								<Link to='/climbing-app' onClick={handleClick}>
+									<h3>Climbing App</h3>
+								</Link>
 								<div className='links-container'>
 									<Link
 										to='/climbing-app'
 										onMouseEnter={() => animateButton('canvas-climb', true)}
 										onMouseLeave={() => animateButton('canvas-climb', false)}
-										onClick={() =>
-											document.documentElement.classList.add('auto-scroll')
-										}>
+										onClick={handleClick}>
 										<canvas className='btn-canvas' id='canvas-climb'></canvas>
 										DETAILS
 									</Link>
@@ -35,10 +39,14 @@ export default function MyWork() {
 						<div
 							className={'project' + `${i % 2 ? ' r-order' : ''}`}
 							key={`project-${i}`}>
-							<img src={project.imgSrc} alt='project preview' />
+							<a href={project.liveURL}>
+								<img src={project.imgSrc} alt='project preview' />
+							</a>
 							<div className='p-side-container'>
 								<div className='p-inner-container'>
-									<h3>{project.name}</h3>
+									<a href={project.liveURL}>
+										<h3>{project.name}</h3>
+									</a>
 									<div className='links-container'>
 										<a
 											onMouseEnter={() => animateButton(`canvas-${i}-g`, true)}

@@ -38,6 +38,10 @@ section {
 	display: block;
 }
 
+.project > a > img {
+	width: 100%;
+}
+
 .project > * {
 	width: 100%;
 	padding: 10px;
@@ -106,7 +110,7 @@ section {
 	}
 }
 
-.project a {
+.links-container a {
 	font-size: 0.8em;
 	display: block;
 	display: flex;
@@ -123,7 +127,7 @@ section {
 	overflow: hidden;
 }
 
-.project a:hover {
+.links-container a:hover {
 	color: black;
 	font-weight: 500;
 }
